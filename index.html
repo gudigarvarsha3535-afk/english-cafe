@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Milksy English Adventure</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/level1.css">
+</head>
+
+<body>
+
+<div class="game-container">
+
+    <!-- ==========================
+         FAIRY BACKGROUND
+    =========================== -->
+
+    <div class="fairy-background">
+
+        <div class="sun"></div>
+
+        <div class="cloud cloud1"></div>
+        <div class="cloud cloud2"></div>
+        <div class="cloud cloud3"></div>
+
+        <div class="sparkles"></div>
+
+        <div class="rainbow"></div>
+
+        <div class="grass"></div>
+
+    </div>
+
+
+    <!-- ==========================
+          TOP BAR
+    =========================== -->
+
+    <div class="top-bar">
+
+        <div class="logo">
+            ☕ Milksy English Adventure
+        </div>
+
+        <div class="game-stats">
+
+            <div class="stat-box">
+                ⭐
+                <span id="score">0</span>
+            </div>
+
+            <div class="stat-box">
+                🔥
+                <span id="streak">0</span>
+            </div>
+
+            <div class="stat-box">
+                🏆
+                <span id="stars">0</span>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==========================
+        LEVEL TITLE
+    =========================== -->
+
+    <div class="level-title">
+
+        <h1>
+            🌸 Level 1
+        </h1>
+
+        <h2>
+            Scratch & Match
+        </h2>
+
+        <p>
+            Scratch the card, reveal the word and drag it to the correct picture.
+        </p>
+
+    </div>
+
+
+    <!-- ==========================
+        PART NAVIGATION
+    =========================== -->
+
+    <div class="parts">
+
+        <button class="part active">
+            Part 1
+            <br>
+            Nouns
+        </button>
+
+        <button class="part locked">
+            Part 2
+            <br>
+            Pronouns
+        </button>
+
+        <button class="part locked">
+            Part 3
+            <br>
+            Verbs
+        </button>
+
+        <button class="part locked">
+            Part 4
+            <br>
+            Adjectives
+        </button>
+
+        <button class="part locked">
+            Part 5
+            <br>
+            Adverbs
+        </button>
+
+        <button class="part locked">
+            Part 6
+            <br>
+            Prepositions
+        </button>
+
+        <button class="part locked">
+            Part 7
+            <br>
+            Conjunctions
+        </button>
+
+    </div>
+
+
+    <!-- ==========================
+        GAME PROGRESS
+    =========================== -->
+
+    <div class="progress-section">
+
+        <div class="progress-text">
+
+            Progress
+
+            <span id="progressText">
+
+                0 / 9 Matched
+
+            </span>
+
+        </div>
+
+        <div class="progress-bar">
+
+            <div id="progress-fill"></div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==========================
+        SCRATCH GAME STARTS
+    =========================== -->
+
+    <section class="scratch-game">
+
+        <!-- ==========================
+         LEFT SIDE
+        ========================== -->
+
+        <div class="left-panel">
+
+            <h2 class="panel-title">
+                🎴 Scratch Cards
+            </h2>
+
+        <p class="panel-description">
+            Scratch one card to reveal a hidden word.
+        </p>
+
+            <div id="scratchGrid" class="scratch-grid">
+
+                <!-- JavaScript will create
+                     9 scratch cards here -->
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ==========================
+         RIGHT SIDE
+        ========================== -->
+
+        <div class="right-panel">
+
+            <h2 class="panel-title">
+
+                🖼️ Match the Picture
+
+            </h2>
+
+        <p class="panel-description">
+
+            Drag the scratched word onto the correct image.
+
+        </p>
+
+            <div id="imageGrid" class="image-grid">
+
+                <!-- JavaScript will create
+                     9 picture cards here -->
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+        <!-- ==========================
+             MILKSY HELPER
+        =========================== -->
+
+        <div class="milksy-helper">
+
+            <div class="milksy-avatar">
+
+                 🥛
+
+            </div>
+
+            <div id="milksyMessage" class="speech">
+
+                Hello! Scratch a card to begin!
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ==========================
+             SCORE SUMMARY
+        =========================== -->
+
+        <div class="bottom-bar">
+
+            <div class="bottom-item">
+
+                ⭐ Stars
+
+                <span id="starCount">
+
+                    0
+
+                </span>
+
+            </div>
+
+            <div class="bottom-item">
+
+                🎯 Matches
+
+                <span id="matchCount">
+
+                    0
+
+                </span>
+
+            </div>
+
+            <div class="bottom-item">
+
+                🔥 Best Streak
+
+                <span id="bestStreak">
+
+                    0   
+
+                </span>
+
+            </div>
+
+        </div>
+
+        <!-- ==========================================
+                LEVEL COMPLETE POPUP
+        =========================================== -->
+
+        <div id="levelCompletePopup" class="popup hidden">
+
+            <div class="popup-card">
+
+                <h1>🎉 Fantastic!</h1>
+
+                <p>
+                    You completed this part successfully!
+                </p>
+
+                <div class="reward-stars">
+
+                    ⭐ ⭐ ⭐
+
+                </div>
+
+                <button id="nextPartBtn" class="next-btn">
+
+                    Next Part →
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ==========================================
+                GAME OVERLAY
+        =========================================== -->
+
+        <div id="gameOverlay" class="game-overlay hidden"></div>
+
+
+
+        <!-- ==========================================
+                SOUND BUTTON
+        =========================================== -->
+
+        <button id="soundBtn" class="sound-btn">
+    
+            🔊
+
+        </button>
+
+
+
+        <!-- ==========================================
+                AUDIO FILES
+        =========================================== -->
+
+        <audio id="btnSound"></audio>
+
+        <audio id="scratchSound"></audio>
+
+        <audio id="flipSound"></audio>
+
+        <audio id="correctSound"></audio>
+
+        <audio id="wrongSound"></audio>
+
+        <audio id="starSound"></audio>
+
+        <audio id="completeSound"></audio>
+
+        <audio id="bgMusic" loop></audio>
+
+
+
+    </div>
+
+    <script src="js/script.js"></script>
+
+</body>
+
+</html>
+</html>
