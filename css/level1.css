@@ -318,3 +318,205 @@ margin-bottom:25px;
 line-height:1.6;
 
 }
+
+/* ==========================================
+LEVEL 1 - SCRATCH & MATCH
+========================================== */
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+
+font-family:
+"Trebuchet MS",
+sans-serif;
+
+overflow-x:hidden;
+
+background:#b9f2ff;
+
+}
+
+/* ==========================================
+MAIN GAME CONTAINER
+========================================== */
+
+.game-container{
+
+position:relative;
+
+min-height:100vh;
+
+overflow:hidden;
+
+background:
+
+linear-gradient(
+180deg,
+#8ed9ff 0%,
+#bfefff 35%,
+#dfffd6 100%
+);
+
+}
+
+/* ==========================================
+TOP BAR
+========================================== */
+
+.top-bar{
+
+width:92%;
+
+margin:25px auto;
+
+padding:18px 30px;
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+background:
+
+rgba(255,255,255,.45);
+
+backdrop-filter:blur(12px);
+
+border-radius:25px;
+
+box-shadow:
+
+0 10px 35px
+rgba(0,0,0,.12);
+
+z-index:20;
+
+position:relative;
+
+}
+
+/* ==========================================
+LOGO
+========================================== */
+
+.logo{
+
+font-size:34px;
+
+font-weight:bold;
+
+color:#5b3b00;
+
+text-shadow:
+
+2px 2px 4px white;
+
+}
+
+/* ==========================================
+STATS
+========================================== */
+
+.game-stats{
+
+display:flex;
+
+gap:18px;
+
+}
+
+.stat-box{
+
+width:95px;
+
+height:75px;
+
+background:white;
+
+border-radius:20px;
+
+display:flex;
+
+flex-direction:column;
+
+justify-content:center;
+
+align-items:center;
+
+font-size:26px;
+
+font-weight:bold;
+
+box-shadow:
+
+0 8px 20px
+rgba(0,0,0,.15);
+
+transition:.35s;
+
+cursor:pointer;
+
+}
+
+.stat-box:hover{
+
+transform:
+
+translateY(-8px)
+scale(1.05);
+
+}
+
+/* ==========================================
+TITLE
+========================================== */
+
+.level-title{
+
+text-align:center;
+
+margin-top:25px;
+
+position:relative;
+
+z-index:10;
+
+}
+
+.level-title h1{
+
+font-size:60px;
+
+color:white;
+
+text-shadow:
+
+3px 3px 8px black;
+
+}
+
+.level-title h2{
+
+font-size:40px;
+
+margin-top:10px;
+
+color:#ff4f81;
+
+}
+
+.level-title p{
+
+font-size:22px;
+
+margin-top:15px;
+
+color:#3d3d3d;
+
+}
