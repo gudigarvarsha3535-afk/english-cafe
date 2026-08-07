@@ -16,214 +16,374 @@ let grammarCorrectAnswers = 0;
 let grammarBestStreak = 0;
 let grammarStreak = 0;
 
-function startLevel1() {
+// ===============================
+// LEVEL 1 QUESTIONS
+// ===============================
 
-    const gameContainer = document.querySelector(".game-container");
+const questions = [
 
-    gameContainer.innerHTML = `
+    {
+        question: "What is the meaning of “Happy”?",
+        options: ["Sad", "Joyful", "Angry", "Tired"],
+        answer: 1
+    },
 
-        <div class="level1-game">
+    {
+        question: "What is the opposite of “Brave”?",
+        options: ["Fearful", "Strong", "Clever", "Happy"],
+        answer: 0
+    },
 
-            <div class="top-bar">
+    {
+        question: "What does “Quick” mean?",
+        options: ["Slow", "Fast", "Quiet", "Weak"],
+        answer: 1
+    },
 
-                <div class="logo">
-                    ☕ Milksy English Adventure
+    {
+        question: "What is the meaning of “Begin”?",
+        options: ["Finish", "Start", "Stop", "Sleep"],
+        answer: 1
+    },
+
+    {
+        question: "What is the opposite of “Difficult”?",
+        options: ["Hard", "Easy", "Heavy", "Long"],
+        answer: 1
+    },
+
+    {
+        question: "What does “Huge” mean?",
+        options: ["Very small", "Very fast", "Very large", "Very weak"],
+        answer: 2
+    },
+
+    {
+        question: "Choose the word closest in meaning to “Smart”.",
+        options: ["Clever", "Lazy", "Slow", "Weak"],
+        answer: 0
+    },
+
+    {
+        question: "What is the opposite of “Early”?",
+        options: ["Fast", "Late", "Quick", "First"],
+        answer: 1
+    },
+
+    {
+        question: "What does “Quiet” mean?",
+        options: ["Making little or no noise", "Very angry", "Very fast", "Very bright"],
+        answer: 0
+    },
+
+    {
+        question: "Choose the correct word: The elephant is very ___.",
+        options: ["Tiny", "Huge", "Short", "Weak"],
+        answer: 1
+    },
+
+    {
+        question: "What is the meaning of “Honest”?",
+        options: ["Always telling the truth", "Always being late", "Very angry", "Very noisy"],
+        answer: 0
+    },
+
+    {
+        question: "What is the opposite of “Ancient”?",
+        options: ["Old", "Modern", "Broken", "Small"],
+        answer: 1
+    },
+
+    {
+        question: "What does “Rapid” mean?",
+        options: ["Slow", "Fast", "Quiet", "Weak"],
+        answer: 1
+    },
+
+    {
+        question: "Choose the word closest in meaning to “Beautiful”.",
+        options: ["Ugly", "Pretty", "Angry", "Noisy"],
+        answer: 1
+    },
+
+    {
+        question: "Choose the correct word: Please ___ the door.",
+        options: ["close", "closed", "closing", "closes"],
+        answer: 0
+    }
+
+];
+
+
+// ===============================
+// LEVEL 1 - CHECK ANSWER + RETRY
+// ===============================
+
+let retryingQuestion = false;
+
+function checkAnswer(selectedAnswer) {
+
+    const feedback = document.getElementById("feedback");
+    const buttons = document.querySelectorAll(".biscuit");
+
+    const current = questions[currentQuestion];
+    const correctAnswer = current.answer;
+
+    // =========================
+    // CORRECT ANSWER
+    // =========================
+
+    if (selectedAnswer === correctAnswer) {
+
+        buttons[selectedAnswer].classList.add("correct");
+
+        // First attempt = 10 points
+        // Retry = 5 points
+        if (retryingQuestion) {
+
+            score += 5;
+            correctAnswers++;
+
+            feedback.innerHTML =
+                "🌟 You mastered it! +5 points!";
+
+            retryingQuestion = false;
+
+        } else {
+
+            score += 10;
+            streak++;
+            correctAnswers++;
+
+            if (streak > bestStreak) {
+                bestStreak = streak;
+            }
+
+            if (streak >= 2) {
+
+                feedback.textContent =
+                    `🔥 ${streak} Answer Streak! +10 points!`;
+
+            } else {
+
+                feedback.textContent =
+                    "🎉 Correct! +10 points! ☕✨";
+            }
+        }
+
+        // Disable all buttons
+        buttons.forEach(button => {
+            button.disabled = true;
+        });
+
+        // Update score
+        document.getElementById("score").textContent = score;
+
+        document.getElementById("streak").textContent = streak;
+
+        // Move to next question
+        setTimeout(() => {
+
+            currentQuestion++;
+
+            if (currentQuestion < questions.length) {
+
+                loadQuestion();
+
+            } else {
+
+                showLevelComplete();
+
+            }
+
+        }, 1200);
+
+    }
+
+    // =========================
+    // WRONG ANSWER
+    // =========================
+
+    else {
+
+        // Highlight ONLY the wrong answer
+        buttons[selectedAnswer].classList.add("wrong");
+
+        // Disable the wrong button
+        buttons[selectedAnswer].disabled = true;
+
+        // Do NOT highlight the correct answer
+        // Student must figure it out!
+
+        streak = 0;
+        retryingQuestion = true;
+
+        feedback.innerHTML = `
+            ❌ Not quite!<br><br>
+
+            💡 <strong>Think about it:</strong><br>
+            ${getExplanation(currentQuestion)}
+
+            <br><br>
+
+            🔄 <strong>Try again!</strong>
+        `;
+
+        // Update streak
+        document.getElementById("streak").textContent = streak;
+    }
+}
+
+// ===============================
+// LEVEL 1 - LEARNING HINTS
+// ===============================
+
+function getExplanation(questionIndex) {
+
+    const explanations = [
+
+        "Happy describes a feeling of joy or pleasure.",
+
+        "Brave means having courage. Think about the feeling someone has when they are afraid.",
+
+        "Quick describes something that happens or moves in a short amount of time.",
+
+        "Begin means to start something.",
+
+        "Difficult describes something that is not easy.",
+
+        "Huge describes something that has a very big size.",
+
+        "Smart describes someone who is clever and understands things quickly.",
+
+        "Early means happening before the expected time.",
+
+        "Quiet describes a place or person that makes little or no noise.",
+
+        "An elephant is known for being very large in size.",
+
+        "An honest person tells the truth and does not lie.",
+
+        "Ancient describes something from a very long time ago. Think about the opposite of old.",
+
+        "Rapid means happening or moving very quickly.",
+
+        "Beautiful describes something that looks very attractive or pleasing.",
+
+        "When you want someone to shut a door, you tell them to ___ it."
+
+    ];
+
+    return explanations[questionIndex];
+}
+
+// ===============================
+// LEVEL 1 - LOAD QUESTION
+// ===============================
+
+function loadQuestion() {
+
+    const current = questions[currentQuestion];
+
+    // Question number
+    document.getElementById("question-number").textContent =
+        `Question ${currentQuestion + 1} / ${questions.length}`;
+
+    // Progress
+    document.getElementById("progress-fill").style.width =
+        `${((currentQuestion + 1) / questions.length) * 100}%`;
+
+    // Question text
+    const questionElement = document.querySelector(".question");
+
+    if (questionElement) {
+        questionElement.textContent = current.question;
+    }
+
+    // Options
+    const buttons = document.querySelectorAll(".biscuit");
+
+    buttons.forEach((button, index) => {
+
+        // 🔥 REMOVE OLD ANSWER COLORS
+        button.classList.remove("correct", "wrong");
+
+        // Enable button again
+        button.disabled = false;
+
+        // Add new option
+        button.innerHTML = `🍪 ${current.options[index]}`;
+
+        // Connect button to new answer
+        button.onclick = function () {
+            checkAnswer(index);
+        };
+
+    });
+
+    // Clear feedback
+    document.getElementById("feedback").textContent = "";
+}
+
+// ===============================
+// LEVEL 1 COMPLETE
+// ===============================
+
+function showLevelComplete() {
+
+    level1Completed = true;
+
+    const stars = calculateStars(questions.length);
+
+    document.querySelector(".game-container").innerHTML = `
+
+        <div class="reward-screen">
+
+            <div class="reward-stars">
+                ${stars}
+            </div>
+
+            <div class="reward-cup">
+                🏆
+            </div>
+
+            <h1>CAFÉ COMPLETE!</h1>
+
+            <p class="reward-message">
+                ☕ Amazing work! You completed Level 1!
+            </p>
+
+            <div class="stats-card">
+
+                <div class="stat">
+                    <span class="stat-icon">🏆</span>
+                    <span class="stat-label">Score</span>
+                    <strong>${score}</strong>
                 </div>
 
-                <div class="game-stats">
+                <div class="stat">
+                    <span class="stat-icon">✅</span>
+                    <span class="stat-label">Correct</span>
+                    <strong>${correctAnswers}/${questions.length}</strong>
+                </div>
 
-                    <div class="stat-box">
-                        ⭐ <span id="score">0</span>
-                    </div>
-
-                    <div class="stat-box">
-                        🔥 <span id="streak">0</span>
-                    </div>
-
-                    <div class="stat-box">
-                        🏆 <span id="stars">0</span>
-                    </div>
-
+                <div class="stat">
+                    <span class="stat-icon">🔥</span>
+                    <span class="stat-label">Best Streak</span>
+                    <strong>${bestStreak}</strong>
                 </div>
 
             </div>
 
-            <div class="level-title">
-
-                <h1>🌸 Level 1</h1>
-
-                <h2>Scratch & Match</h2>
-
-                <p>
-                    Scratch a card, discover the word,
-                    then match it with the correct picture!
-                </p>
-
-            </div>
-
-            <div class="parts">
-
-                <button class="part active">
-                    Part 1<br>Nouns
-                </button>
-
-                <button class="part locked">
-                    Part 2<br>Pronouns
-                </button>
-
-                <button class="part locked">
-                    Part 3<br>Verbs
-                </button>
-
-                <button class="part locked">
-                    Part 4<br>Adjectives
-                </button>
-
-                <button class="part locked">
-                    Part 5<br>Adverbs
-                </button>
-
-                <button class="part locked">
-                    Part 6<br>Prepositions
-                </button>
-
-                <button class="part locked">
-                    Part 7<br>Conjunctions
-                </button>
-
-            </div>
-
-            <div class="progress-section">
-
-                <div class="progress-text">
-
-                    Progress
-
-                    <span id="progressText">
-                        0 / 9 Matched
-                    </span>
-
-                </div>
-
-                <div class="progress-bar">
-
-                    <div id="progress-fill"></div>
-
-                </div>
-
-            </div>
-
-            <section class="scratch-game">
-
-                <div class="left-panel">
-
-                    <h2 class="panel-title">
-                        🎴 Scratch Cards
-                    </h2>
-
-                    <p class="panel-description">
-                        Scratch a card to reveal a hidden noun.
-                    </p>
-
-                    <div
-                        id="scratchGrid"
-                        class="scratch-grid">
-                    </div>
-
-                </div>
-
-                <div class="right-panel">
-
-                    <h2 class="panel-title">
-                        🖼️ Match the Picture
-                    </h2>
-
-                    <p class="panel-description">
-                        Drag the revealed word onto its picture.
-                    </p>
-
-                    <div
-                        id="imageGrid"
-                        class="image-grid">
-                    </div>
-
-                </div>
-
-            </section>
-
-            <div class="milksy-helper">
-
-                <div class="milksy-avatar">
-                    🥛
-                </div>
-
-                <div
-                    id="milksyMessage"
-                    class="speech">
-
-                    Hello! Scratch a card to begin!
-
-                </div>
-
-            </div>
-
-            <div class="bottom-bar">
-
-                <div class="bottom-item">
-                    ⭐ Stars
-                    <span id="starCount">0</span>
-                </div>
-
-                <div class="bottom-item">
-                    🎯 Matches
-                    <span id="matchCount">0</span>
-                </div>
-
-                <div class="bottom-item">
-                    🔥 Best Streak
-                    <span id="bestStreak">0</span>
-                </div>
-
-            </div>
-
-            <div
-                id="levelCompletePopup"
-                class="popup hidden">
-
-                <div class="popup-card">
-
-                    <h1>🎉 Fantastic!</h1>
-
-                    <p>
-                        You completed Part 1!
-                    </p>
-
-                    <div class="reward-stars">
-                        ⭐ ⭐ ⭐
-                    </div>
-
-                    <button
-                        id="nextPartBtn"
-                        class="next-btn">
-
-                        Next Part →
-
-                    </button>
-
-                </div>
-
-            </div>
+            <button class="level-button" onclick="returnToMap()">
+                        🗺️ Back to Adventure Map
+            </button>
 
         </div>
 
     `;
-
-    // Start Scratch & Match
-    createScratchCards();
-    createImages();
-    updateScore();
-
 }
+
 
 // ===============================
 // LEVEL 2 INTRO
@@ -1613,4 +1773,213 @@ function startMilksyAdventure() {
     }
 
     move();
+}
+
+function startLevel1() {
+
+    const gameContainer = document.querySelector(".game-container");
+
+    gameContainer.innerHTML = `
+
+        <div class="level1-game">
+
+            <div class="top-bar">
+
+                <div class="logo">
+                    ☕ Milksy English Adventure
+                </div>
+
+                <div class="game-stats">
+
+                    <div class="stat-box">
+                        ⭐ <span id="score">0</span>
+                    </div>
+
+                    <div class="stat-box">
+                        🔥 <span id="streak">0</span>
+                    </div>
+
+                    <div class="stat-box">
+                        🏆 <span id="stars">0</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="level-title">
+
+                <h1>🌸 Level 1</h1>
+
+                <h2>Scratch & Match</h2>
+
+                <p>
+                    Scratch a card, discover the word,
+                    then match it with the correct picture!
+                </p>
+
+            </div>
+
+            <div class="parts">
+
+                <button class="part active">
+                    Part 1<br>Nouns
+                </button>
+
+                <button class="part locked">
+                    Part 2<br>Pronouns
+                </button>
+
+                <button class="part locked">
+                    Part 3<br>Verbs
+                </button>
+
+                <button class="part locked">
+                    Part 4<br>Adjectives
+                </button>
+
+                <button class="part locked">
+                    Part 5<br>Adverbs
+                </button>
+
+                <button class="part locked">
+                    Part 6<br>Prepositions
+                </button>
+
+                <button class="part locked">
+                    Part 7<br>Conjunctions
+                </button>
+
+            </div>
+
+            <div class="progress-section">
+
+                <div class="progress-text">
+
+                    Progress
+
+                    <span id="progressText">
+                        0 / 9 Matched
+                    </span>
+
+                </div>
+
+                <div class="progress-bar">
+
+                    <div id="progress-fill"></div>
+
+                </div>
+
+            </div>
+
+            <section class="scratch-game">
+
+                <div class="left-panel">
+
+                    <h2 class="panel-title">
+                        🎴 Scratch Cards
+                    </h2>
+
+                    <p class="panel-description">
+                        Scratch a card to reveal a hidden noun.
+                    </p>
+
+                    <div
+                        id="scratchGrid"
+                        class="scratch-grid">
+                    </div>
+
+                </div>
+
+                <div class="right-panel">
+
+                    <h2 class="panel-title">
+                        🖼️ Match the Picture
+                    </h2>
+
+                    <p class="panel-description">
+                        Drag the revealed word onto its picture.
+                    </p>
+
+                    <div
+                        id="imageGrid"
+                        class="image-grid">
+                    </div>
+
+                </div>
+
+            </section>
+
+            <div class="milksy-helper">
+
+                <div class="milksy-avatar">
+                    🥛
+                </div>
+
+                <div
+                    id="milksyMessage"
+                    class="speech">
+
+                    Hello! Scratch a card to begin!
+
+                </div>
+
+            </div>
+
+            <div class="bottom-bar">
+
+                <div class="bottom-item">
+                    ⭐ Stars
+                    <span id="starCount">0</span>
+                </div>
+
+                <div class="bottom-item">
+                    🎯 Matches
+                    <span id="matchCount">0</span>
+                </div>
+
+                <div class="bottom-item">
+                    🔥 Best Streak
+                    <span id="bestStreak">0</span>
+                </div>
+
+            </div>
+
+            <div
+                id="levelCompletePopup"
+                class="popup hidden">
+
+                <div class="popup-card">
+
+                    <h1>🎉 Fantastic!</h1>
+
+                    <p>
+                        You completed Part 1!
+                    </p>
+
+                    <div class="reward-stars">
+                        ⭐ ⭐ ⭐
+                    </div>
+
+                    <button
+                        id="nextPartBtn"
+                        class="next-btn">
+
+                        Next Part →
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    `;
+
+    // Start Scratch & Match
+    createScratchCards();
+    createImages();
+    updateScore();
+
 }
