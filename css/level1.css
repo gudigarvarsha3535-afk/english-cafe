@@ -1464,3 +1464,119 @@ opacity:0;
 
 }
 
+/* =====================================
+LEVEL COMPLETE POPUP
+===================================== */
+
+.popup{
+
+position:fixed;
+
+left:0;
+top:0;
+
+width:100%;
+height:100%;
+
+display:flex;
+
+justify-content:center;
+align-items:center;
+
+background:rgba(0,0,0,.45);
+
+z-index:999;
+
+}
+
+.hidden{
+
+display:none;
+
+}
+
+.popup-card{
+
+width:500px;
+
+background:white;
+
+border-radius:35px;
+
+padding:45px;
+
+text-align:center;
+
+animation:popupOpen .4s;
+
+box-shadow:
+0 25px 60px rgba(0,0,0,.3);
+
+}
+
+@keyframes popupOpen{
+
+0%{
+transform:scale(.7);
+opacity:0;
+}
+
+100%{
+transform:scale(1);
+opacity:1;
+}
+
+}
+
+.reward-stars{
+
+font-size:70px;
+
+margin:25px;
+
+animation:starGlow 2s infinite;
+
+}
+
+@keyframes starGlow{
+
+0%,100%{
+transform:scale(1);
+}
+
+50%{
+transform:scale(1.15);
+}
+
+}
+
+.next-btn{
+
+padding:18px 40px;
+
+margin-top:25px;
+
+border:none;
+
+border-radius:20px;
+
+font-size:22px;
+
+cursor:pointer;
+
+background:linear-gradient(
+135deg,
+#ffe259,
+#ffa751
+);
+
+transition:.3s;
+
+}
+
+.next-btn:hover{
+
+transform:scale(1.08);
+
+}
+
