@@ -1,10 +1,3 @@
-console.log("SCRATCH GAME JS LOADED");
-
-/* ===========================================
-   SCRATCH & MATCH ENGINE
-=========================================== */
-
-
 const nouns = [
 
     {
