@@ -1,0 +1,320 @@
+/* ===========================================
+   LEVEL 1 MAIN CONTAINER
+=========================================== */
+
+.level-container{
+
+width:100%;
+min-height:100vh;
+
+display:flex;
+flex-direction:column;
+
+padding:30px 40px;
+
+box-sizing:border-box;
+
+position:relative;
+
+z-index:5;
+
+}
+
+
+/* ===========================================
+HEADER
+=========================================== */
+
+.level-header{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+margin-bottom:30px;
+
+gap:30px;
+
+flex-wrap:wrap;
+
+}
+
+
+/* ===========================================
+LEVEL INFO
+=========================================== */
+
+.level-info{
+
+display:flex;
+
+flex-direction:column;
+
+gap:10px;
+
+}
+
+.level-info h1{
+
+font-size:55px;
+
+color:white;
+
+text-shadow:
+3px 3px 8px black;
+
+margin:0;
+
+}
+
+.level-info h2{
+
+font-size:34px;
+
+color:#ffe66d;
+
+margin:0;
+
+}
+
+.level-info p{
+
+font-size:20px;
+
+color:white;
+
+max-width:650px;
+
+line-height:1.6;
+
+}
+
+
+/* ===========================================
+SCORE PANEL
+=========================================== */
+
+.score-panel{
+
+display:flex;
+
+gap:20px;
+
+flex-wrap:wrap;
+
+}
+
+.score-box{
+
+width:120px;
+
+height:85px;
+
+border-radius:20px;
+
+background:rgba(255,255,255,.18);
+
+backdrop-filter:blur(10px);
+
+display:flex;
+
+flex-direction:column;
+
+justify-content:center;
+
+align-items:center;
+
+font-size:30px;
+
+font-weight:bold;
+
+color:white;
+
+box-shadow:
+0 10px 25px rgba(0,0,0,.25);
+
+transition:.3s;
+
+}
+
+.score-box:hover{
+
+transform:translateY(-5px);
+
+}
+
+
+/* ===========================================
+PART BUTTONS
+=========================================== */
+
+.parts-navigation{
+
+display:flex;
+
+gap:15px;
+
+flex-wrap:wrap;
+
+margin-bottom:30px;
+
+}
+
+.part{
+
+border:none;
+
+padding:18px 24px;
+
+border-radius:18px;
+
+font-size:18px;
+
+font-weight:bold;
+
+cursor:pointer;
+
+transition:.35s;
+
+box-shadow:
+0 8px 18px rgba(0,0,0,.2);
+
+}
+
+.part.active{
+
+background:#ffb703;
+
+color:white;
+
+}
+
+.part.locked{
+
+background:#d9d9d9;
+
+color:#777;
+
+cursor:not-allowed;
+
+}
+
+
+/* ===========================================
+PROGRESS
+=========================================== */
+
+.progress-wrapper{
+
+margin-bottom:35px;
+
+}
+
+.progress-text{
+
+display:flex;
+
+justify-content:space-between;
+
+font-size:22px;
+
+font-weight:bold;
+
+color:white;
+
+margin-bottom:10px;
+
+}
+
+.progress-bar{
+
+height:24px;
+
+background:white;
+
+border-radius:50px;
+
+overflow:hidden;
+
+box-shadow:
+0 5px 15px rgba(0,0,0,.2);
+
+}
+
+#progress-fill{
+
+width:0%;
+
+height:100%;
+
+background:linear-gradient(
+90deg,
+#00d084,
+#00ff99
+);
+
+transition:.6s;
+
+}
+
+
+/* ===========================================
+GAME BOARD
+=========================================== */
+
+.game-board{
+
+display:grid;
+
+grid-template-columns:1fr 1fr;
+
+gap:40px;
+
+align-items:start;
+
+}
+
+
+/* ===========================================
+PANELS
+=========================================== */
+
+.scratch-side,
+.match-side{
+
+background:rgba(255,255,255,.15);
+
+border-radius:30px;
+
+padding:30px;
+
+backdrop-filter:blur(12px);
+
+box-shadow:
+0 15px 30px rgba(0,0,0,.18);
+
+}
+
+.panel-title{
+
+font-size:34px;
+
+color:white;
+
+margin-bottom:15px;
+
+}
+
+.panel-description{
+
+font-size:18px;
+
+color:white;
+
+margin-bottom:25px;
+
+line-height:1.6;
+
+}
