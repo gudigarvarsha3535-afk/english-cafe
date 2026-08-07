@@ -4,14 +4,6 @@ console.log("SCRATCH GAME JS LOADED");
    SCRATCH & MATCH ENGINE
 =========================================== */
 
-let score = 0;
-let streak = 0;
-let stars = 0;
-let matches = 0;
-let bestStreak = 0;
-
-let draggedWord = "";
-let matchedWords = new Set();
 
 const nouns = [
 
