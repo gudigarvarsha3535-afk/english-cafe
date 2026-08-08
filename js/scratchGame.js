@@ -12,37 +12,37 @@ const nouns = [
 
     {
         word: "Book",
-        image: "images/nouns/book.png"
+        image: "images/nouns/book.jpg"
     },
 
     {
         word: "School",
-        image: "images/nouns/school.png"
+        image: "images/nouns/school.jpg"
     },
 
     {
         word: "Tree",
-        image: "images/nouns/tree.png"
+        image: "images/nouns/tree.jpg"
     },
 
     {
         word: "Bus",
-        image: "images/nouns/bus.png"
+        image: "images/nouns/bus.jpg"
     },
 
     {
         word: "Chair",
-        image: "images/nouns/chair.png"
+        image: "images/nouns/chair.jpg"
     },
 
     {
         word: "Teacher",
-        image: "images/nouns/teacher.png"
+        image: "images/nouns/teacher.jpg"
     },
 
     {
         word: "Cat",
-        image: "images/nouns/cat.png"
+        image: "images/nouns/cat.jpg"
     }
 
 ];
