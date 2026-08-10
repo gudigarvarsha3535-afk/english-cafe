@@ -1,3 +1,87 @@
+document.addEventListener("DOMContentLoaded", function () {
+
+    const part1Btn = document.getElementById("part1Btn");
+    const scratchGameScreen =
+        document.getElementById("scratchGameScreen");
+
+    const backToPartsBtn =
+        document.getElementById("backToPartsBtn");
+
+
+    /* ================================
+       OPEN SCRATCH GAME
+    ================================= */
+
+    if (part1Btn) {
+
+        part1Btn.addEventListener("click", function () {
+
+            console.log("Part 1 clicked");
+
+            scratchGameScreen.classList.remove("hidden");
+
+            document.body.classList.add("scratch-mode");
+
+
+            /* Try browser fullscreen */
+
+            if (document.documentElement.requestFullscreen) {
+
+                document.documentElement
+                    .requestFullscreen()
+                    .catch(() => {
+                        console.log("Fullscreen permission not available");
+                    });
+
+            }
+
+
+            /* Create the cards */
+
+            if (typeof createScratchCards === "function") {
+
+                createScratchCards();
+
+            } else {
+
+                console.error(
+                    "createScratchCards() is missing from scratchGame.js"
+                );
+
+            }
+
+        });
+
+    }
+
+
+    /* ================================
+       BACK TO PARTS
+    ================================= */
+
+    if (backToPartsBtn) {
+
+        backToPartsBtn.addEventListener("click", function () {
+
+            scratchGameScreen.classList.add("hidden");
+
+            document.body.classList.remove("scratch-mode");
+
+
+            /* Exit browser fullscreen */
+
+            if (document.fullscreenElement) {
+
+                document.exitFullscreen().catch(() => {});
+
+            }
+
+        });
+
+    }
+
+});
+
 /* ==========================================
    SCRATCH & MATCH — PART 1 NOUNS
 ========================================== */
