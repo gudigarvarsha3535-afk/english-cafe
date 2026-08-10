@@ -786,3 +786,42 @@ document.addEventListener(
 
     }
 );
+
+/* =========================================
+   PART 1 → SCRATCH & MATCH
+========================================= */
+
+const part1Btn = document.getElementById("part1Btn");
+const scratchGameScreen =
+    document.getElementById("scratchGameScreen");
+
+const backToPartsBtn =
+    document.getElementById("backToPartsBtn");
+
+
+if (part1Btn) {
+
+    part1Btn.addEventListener("click", function () {
+
+        scratchGameScreen.classList.remove("hidden");
+
+        // Create the game
+        createScratchCards();
+        createImages();
+
+        updateScore();
+
+    });
+
+}
+
+
+if (backToPartsBtn) {
+
+    backToPartsBtn.addEventListener("click", function () {
+
+        scratchGameScreen.classList.add("hidden");
+
+    });
+
+}
