@@ -93,13 +93,13 @@
 
     <div class="parts">
 
-        <button class="part active"  id="part1Btn">
+        <button class="part active"  id="part1Btn"  type="button">
             Part 1
             <br>
             Nouns
         </button>
 
-        <button class="part locked"  id="part2Btn">
+        <button class="part locked"  id="part2Btn"   type="button">
             Part 2
             <br>
             Pronouns
@@ -166,15 +166,37 @@
 
 
 
-<section id="scratchGameScreen" class="scratch-game-screen hidden">
+<!-- ==========================================
+     SCRATCH GAME SCREEN
+=========================================== -->
 
-    <button id="backToPartsBtn" class="back-parts-btn">
+<div id="scratchGameScreen" class="scratch-game-screen hidden">
+
+    <!-- BACK BUTTON -->
+    <button id="backToPartsBtn" class="back-parts-btn" type="button">
         ← Back to Parts
     </button>
 
+    <!-- GAME HEADER -->
+    <div class="scratch-game-header">
+
+        <h1>🎴 Scratch & Match</h1>
+
+        <p>
+            Scratch a card, discover the word,
+            then match it with the correct picture!
+        </p>
+
+    </div>
+
+
+    <!-- TWO-PANEL GAME -->
     <div class="scratch-game">
 
-        <!-- LEFT -->
+        <!-- ==================================
+             LEFT: SCRATCH CARDS
+        =================================== -->
+
         <div class="left-panel">
 
             <h2 class="panel-title">
@@ -185,11 +207,17 @@
                 Scratch a card to reveal a hidden word.
             </p>
 
-            <div id="scratchGrid" class="scratch-grid"></div>
+            <div id="scratchGrid" class="scratch-grid">
+                <!-- JavaScript creates 9 cards -->
+            </div>
 
         </div>
 
-        <!-- RIGHT -->
+
+        <!-- ==================================
+             RIGHT: PICTURES
+        =================================== -->
+
         <div class="right-panel">
 
             <h2 class="panel-title">
@@ -200,13 +228,15 @@
                 Drag the revealed word onto the correct picture.
             </p>
 
-            <div id="imageGrid" class="image-grid"></div>
+            <div id="imageGrid" class="image-grid">
+                <!-- JavaScript creates 9 pictures -->
+            </div>
 
         </div>
 
     </div>
 
-</section>
+</div>
         <!-- ==========================
              MILKSY HELPER
         =========================== -->
