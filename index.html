@@ -73,7 +73,7 @@
     <div class="level-title">
 
         <h1>
-            🌸 Level 1
+             Level 1
         </h1>
 
         <h2>
@@ -171,53 +171,46 @@
 
     <section class="scratch-game">
 
-        <!-- ==========================
-         LEFT SIDE
-        ========================== -->
+        <!-- =========================================
+                 SCRATCH & MATCH GAME SCREEN
+        ========================================= -->
 
-        <div class="left-panel">
+        <div id="scratchGameScreen" class="scratch-game-screen hidden">
 
-            <h2 class="panel-title">
-                🎴 Scratch Cards
-            </h2>
+            <button id="backToPartsBtn" class="back-parts-btn">
+                    ← Back to Parts
+            </button>
 
-        <p class="panel-description">
-            Scratch one card to reveal a hidden word.
-        </p>
+        <div class="scratch-game">
 
-            <div id="scratchGrid" class="scratch-grid">
+            <div class="left-panel">
 
-                <!-- JavaScript will create
-                     9 scratch cards here -->
+                <h2 class="panel-title">
+                    🎴 Scratch Cards
+                </h2>
+
+                <p class="panel-description">
+                    Scratch one card to reveal a hidden word.
+                </p>
+
+                <div id="scratchGrid" class="scratch-grid"></div>
 
             </div>
 
-        </div>
 
+            <div class="right-panel">
 
+                <h2 class="panel-title">
+                    🖼️ Match the Picture
+                </h2>
 
-        <!-- ==========================
-         RIGHT SIDE
-        ========================== -->
+                <p class="panel-description">
+                    Drag the scratched word onto the correct picture.
+                </p>
 
-        <div class="right-panel">
+                <div id="imageGrid" class="image-grid"></div>
 
-            <h2 class="panel-title">
-
-                🖼️ Match the Picture
-
-            </h2>
-
-        <p class="panel-description">
-
-            Drag the scratched word onto the correct image.
-
-        </p>
-
-            <div id="imageGrid" class="image-grid">
-
-                <!-- JavaScript will create
-                     9 picture cards here -->
+            </div>
 
             </div>
 
