@@ -1,144 +1,56 @@
-document.addEventListener("DOMContentLoaded", function () {
-
-    const part1Btn = document.getElementById("part1Btn");
-    const scratchGameScreen =
-        document.getElementById("scratchGameScreen");
-
-    const backToPartsBtn =
-        document.getElementById("backToPartsBtn");
+/* =========================================================
+   MILKSY ENGLISH ADVENTURE
+   SCRATCH & MATCH — PART 1: NOUNS
+========================================================= */
 
 
-    /* ================================
-       OPEN SCRATCH GAME
-    ================================= */
-
-    if (part1Btn) {
-
-        part1Btn.addEventListener("click", function () {
-
-            console.log("Part 1 clicked");
-
-            scratchGameScreen.classList.remove("hidden");
-
-            document.body.classList.add("scratch-mode");
-
-
-            /* Try browser fullscreen */
-
-            if (document.documentElement.requestFullscreen) {
-
-                document.documentElement
-                    .requestFullscreen()
-                    .catch(() => {
-                        console.log("Fullscreen permission not available");
-                    });
-
-            }
-
-
-            /* Create the cards */
-
-            if (typeof createScratchCards === "function") {
-
-                createScratchCards();
-
-            } else {
-
-                console.error(
-                    "createScratchCards() is missing from scratchGame.js"
-                );
-
-            }
-
-        });
-
-    }
-
-
-    /* ================================
-       BACK TO PARTS
-    ================================= */
-
-    if (backToPartsBtn) {
-
-        backToPartsBtn.addEventListener("click", function () {
-
-            scratchGameScreen.classList.add("hidden");
-
-            document.body.classList.remove("scratch-mode");
-
-
-            /* Exit browser fullscreen */
-
-            if (document.fullscreenElement) {
-
-                document.exitFullscreen().catch(() => {});
-
-            }
-
-        });
-
-    }
-
-});
-
-/* ==========================================
-   SCRATCH & MATCH — PART 1 NOUNS
-========================================== */
+/* =========================================================
+   PART 1 DATA
+========================================================= */
 
 const nouns = [
-
     {
         word: "Apple",
         image: "images/nouns/apple.png"
     },
-
     {
         word: "Dog",
         image: "images/nouns/dog.png"
     },
-
     {
         word: "Book",
         image: "images/nouns/book.png"
     },
-
     {
         word: "School",
         image: "images/nouns/school.png"
     },
-
     {
         word: "Tree",
         image: "images/nouns/tree.png"
     },
-
     {
         word: "Bus",
         image: "images/nouns/bus.png"
     },
-
     {
         word: "Chair",
         image: "images/nouns/chair.png"
     },
-
     {
         word: "Teacher",
         image: "images/nouns/teacher.png"
     },
-
     {
         word: "Cat",
         image: "images/nouns/cat.png"
     }
-
 ];
 
 
-/* ==========================================
-   SCRATCH GAME VARIABLES
-========================================== */
+/* =========================================================
+   GAME VARIABLES
+========================================================= */
 
 let scratchScore = 0;
 let scratchStreak = 0;
@@ -146,26 +58,30 @@ let scratchStars = 0;
 let scratchMatches = 0;
 let scratchBestStreak = 0;
 
-let draggedWord = "";
+let draggedWord = null;
+
+let revealedCards = [];
+let matchedWords = [];
 
 
-/* ==========================================
-   OPEN SCRATCH GAME
-========================================== */
+/* =========================================================
+   START GAME
+========================================================= */
 
 function openScratchGame() {
 
-    const gameScreen =
+    const screen =
         document.getElementById("scratchGameScreen");
 
-    if (!gameScreen) {
-        console.error("Scratch game screen not found.");
+    if (!screen) {
+        console.error("scratchGameScreen not found.");
         return;
     }
 
-    gameScreen.classList.remove("hidden");
-
+    screen.classList.remove("hidden");
     document.body.classList.add("scratch-mode");
+
+    resetScratchGame();
 
     createScratchCards();
     createImages();
@@ -173,35 +89,61 @@ function openScratchGame() {
     updateScratchStats();
 
     updateMilksy(
-        "Amazing! Scratch a card to discover a noun! ✨"
+        "Welcome to Scratch & Match! ✨ Pick a mystery card!"
     );
 }
 
 
-/* ==========================================
-   CLOSE SCRATCH GAME
-========================================== */
+/* =========================================================
+   RESET GAME
+========================================================= */
+
+function resetScratchGame() {
+
+    scratchScore = 0;
+    scratchStreak = 0;
+    scratchStars = 0;
+    scratchMatches = 0;
+    scratchBestStreak = 0;
+
+    draggedWord = null;
+
+    revealedCards = [];
+    matchedWords = [];
+
+    const popup =
+        document.getElementById("levelCompletePopup");
+
+    if (popup) {
+        popup.classList.add("hidden");
+    }
+}
+
+
+/* =========================================================
+   CLOSE GAME
+========================================================= */
 
 function closeScratchGame() {
 
-    const gameScreen =
+    const screen =
         document.getElementById("scratchGameScreen");
 
-    if (!gameScreen) return;
+    if (!screen) return;
 
-    gameScreen.classList.add("hidden");
+    screen.classList.add("hidden");
 
     document.body.classList.remove("scratch-mode");
 
     updateMilksy(
-        "Welcome back! Choose a part to continue. 🌸"
+        "Welcome back! Choose another part. 🌸"
     );
 }
 
 
-/* ==========================================
-   CREATE SCRATCH CARDS
-========================================== */
+/* =========================================================
+   CREATE 9 SCRATCH CARDS
+========================================================= */
 
 function createScratchCards() {
 
@@ -215,7 +157,16 @@ function createScratchCards() {
 
     grid.innerHTML = "";
 
-    nouns.forEach((item) => {
+    /*
+       Shuffle the nouns so the same word
+       is not always in the same position.
+    */
+
+    const shuffledNouns =
+        [...nouns].sort(() => Math.random() - 0.5);
+
+
+    shuffledNouns.forEach((item, index) => {
 
         const card =
             document.createElement("div");
@@ -225,20 +176,40 @@ function createScratchCards() {
         card.dataset.word = item.word;
 
         card.innerHTML = `
+
             <div class="scratch-cover">
-                ✨
-                <span>Scratch Me!</span>
+
+                <div class="scratch-star">
+                    ✨
+                </div>
+
+                <div class="scratch-text">
+                    Scratch Me!
+                </div>
+
+                <div class="scratch-number">
+                    ${index + 1}
+                </div>
+
             </div>
+
         `;
+
+
+        /*
+           Click only reveals the card.
+           It does NOT immediately match anything.
+        */
 
         card.addEventListener(
             "click",
             function () {
 
-                revealCard(card, item);
+                revealScratchCard(card, item);
 
             }
         );
+
 
         grid.appendChild(card);
 
@@ -246,55 +217,103 @@ function createScratchCards() {
 }
 
 
-/* ==========================================
+/* =========================================================
    REVEAL SCRATCH CARD
-========================================== */
+========================================================= */
 
-function revealCard(card, item) {
+function revealScratchCard(card, item) {
 
-    if (card.classList.contains("revealed")) {
+    /*
+       Don't allow a card to be revealed twice.
+    */
+
+    if (
+        card.classList.contains("revealed") ||
+        card.classList.contains("matched")
+    ) {
         return;
     }
 
+
     card.classList.add("revealed");
 
+
+    /*
+       Remember the revealed word.
+    */
+
+    revealedCards.push(item.word);
+
+
+    /*
+       Replace the scratch cover
+       with the actual word.
+    */
+
     card.innerHTML = `
+
         <div class="revealed-word">
-            ${item.word}
+
+            <span class="word-icon">
+                💭
+            </span>
+
+            <span>
+                ${item.word}
+            </span>
+
         </div>
+
     `;
+
+
+    /*
+       Make the card draggable.
+    */
 
     card.draggable = true;
 
+
     card.addEventListener(
         "dragstart",
-        dragStart
+        function (event) {
+
+            draggedWord = item.word;
+
+            event.dataTransfer.setData(
+                "text/plain",
+                item.word
+            );
+
+            card.classList.add("dragging");
+
+        }
     );
 
-    updateMilksy(
-        `You found "${item.word}"! Now drag it to the correct picture. 🎯`
+
+    card.addEventListener(
+        "dragend",
+        function () {
+
+            card.classList.remove("dragging");
+
+        }
     );
+
+
+    updateMilksy(
+        `You discovered "${item.word}"! 🎉 Drag it to the matching picture!`
+    );
+
 
     playScratchSound();
 
 }
 
 
-/* ==========================================
-   DRAG WORD
-========================================== */
-
-function dragStart(event) {
-
-    draggedWord =
-        event.currentTarget.dataset.word;
-
-}
-
-
-/* ==========================================
-   CREATE PICTURES
-========================================== */
+/* =========================================================
+   CREATE IMAGE CARDS
+========================================================= */
 
 function createImages() {
 
@@ -308,10 +327,16 @@ function createImages() {
 
     grid.innerHTML = "";
 
+
+    /*
+       Shuffle the pictures.
+    */
+
     const shuffled =
         [...nouns].sort(
             () => Math.random() - 0.5
         );
+
 
     shuffled.forEach((item) => {
 
@@ -320,26 +345,65 @@ function createImages() {
 
         card.className = "picture-card";
 
-        card.dataset.word =
-            item.word;
+        card.dataset.word = item.word;
+
+
+        /*
+           IMPORTANT:
+           We deliberately DON'T show
+           the word below the picture.
+        */
 
         card.innerHTML = `
-            <img
-                src="${item.image}"
-                alt="${item.word}"
-            >
-            <span>${item.word}</span>
+
+            <div class="picture-holder">
+
+                <img
+                    src="${item.image}"
+                    alt="${item.word}"
+                    draggable="false"
+                >
+
+            </div>
+
         `;
+
+
+        /*
+           Drag events
+        */
 
         card.addEventListener(
             "dragover",
             allowDrop
         );
 
+
+        card.addEventListener(
+            "dragenter",
+            function () {
+
+                card.classList.add("drop-ready");
+
+            }
+        );
+
+
+        card.addEventListener(
+            "dragleave",
+            function () {
+
+                card.classList.remove("drop-ready");
+
+            }
+        );
+
+
         card.addEventListener(
             "drop",
             dropWord
         );
+
 
         grid.appendChild(card);
 
@@ -347,9 +411,9 @@ function createImages() {
 }
 
 
-/* ==========================================
+/* =========================================================
    ALLOW DROP
-========================================== */
+========================================================= */
 
 function allowDrop(event) {
 
@@ -358,42 +422,104 @@ function allowDrop(event) {
 }
 
 
-/* ==========================================
-   DROP WORD
-========================================== */
+/* =========================================================
+   DROP WORD ON IMAGE
+========================================================= */
 
 function dropWord(event) {
 
     event.preventDefault();
 
+
     const picture =
         event.currentTarget;
+
+
+    picture.classList.remove(
+        "drop-ready"
+    );
+
+
+    /*
+       Get dragged word.
+    */
+
+    const word =
+        draggedWord ||
+        event.dataTransfer.getData("text/plain");
+
+
+    if (!word) {
+
+        return;
+
+    }
+
 
     const correctWord =
         picture.dataset.word;
 
 
-    /* -----------------------------
-       CORRECT
-    ----------------------------- */
+    /* =====================================================
+       CORRECT MATCH
+    ===================================================== */
 
-    if (draggedWord === correctWord) {
+    if (word === correctWord) {
+
+        /*
+           Don't allow the same picture
+           to be matched twice.
+        */
 
         if (
             picture.classList.contains("correct")
         ) {
+
             return;
+
         }
+
 
         picture.classList.add("correct");
 
-        scratchMatches++;
+
+        /*
+           Find the scratch card.
+        */
+
+        const matchingScratchCard =
+            document.querySelector(
+                `.scratch-card[data-word="${CSS.escape(word)}"]`
+            );
+
+
+        if (matchingScratchCard) {
+
+            matchingScratchCard.classList.add(
+                "matched"
+            );
+
+            matchingScratchCard.draggable = false;
+
+        }
+
+
+        /*
+           Score
+        */
 
         scratchScore += 10;
+
+        scratchMatches++;
 
         scratchStreak++;
 
         scratchStars++;
+
+
+        /*
+           Best streak
+        */
 
         if (
             scratchStreak >
@@ -405,15 +531,53 @@ function dropWord(event) {
 
         }
 
+
+        /*
+           Remember matched word
+        */
+
+        matchedWords.push(word);
+
+
         updateScratchStats();
 
+
         updateMilksy(
-            `Excellent! ${correctWord} is correct! ⭐`
+            `Wonderful! ${word} matches! ⭐`
         );
+
 
         playCorrectSound();
 
-        if (scratchMatches === nouns.length) {
+
+        /*
+           Small success animation
+        */
+
+        picture.classList.add(
+            "match-pop"
+        );
+
+
+        setTimeout(
+            () => {
+
+                picture.classList.remove(
+                    "match-pop"
+                );
+
+            },
+            500
+        );
+
+
+        /*
+           Check completion
+        */
+
+        if (
+            scratchMatches === nouns.length
+        ) {
 
             completeScratchGame();
 
@@ -422,23 +586,30 @@ function dropWord(event) {
     }
 
 
-    /* -----------------------------
-       WRONG
-    ----------------------------- */
+    /* =====================================================
+       WRONG MATCH
+    ===================================================== */
 
     else {
 
-        picture.classList.add("wrong");
+        picture.classList.add(
+            "wrong"
+        );
+
 
         scratchStreak = 0;
 
+
         updateScratchStats();
 
+
         updateMilksy(
-            "Almost! Try another picture. 💭"
+            "Oops! That's not the right picture. Try again! 💭"
         );
 
+
         playWrongSound();
+
 
         setTimeout(
             () => {
@@ -448,17 +619,20 @@ function dropWord(event) {
                 );
 
             },
-            600
+            700
         );
 
     }
 
+
+    draggedWord = null;
+
 }
 
 
-/* ==========================================
-   UPDATE SCORE
-========================================== */
+/* =========================================================
+   UPDATE GAME STATS
+========================================================= */
 
 function updateScratchStats() {
 
@@ -487,50 +661,85 @@ function updateScratchStats() {
         document.getElementById("progress-fill");
 
 
-    if (score)
+    if (score) {
+
         score.textContent =
             scratchScore;
 
-    if (streak)
+    }
+
+
+    if (streak) {
+
         streak.textContent =
             scratchStreak;
 
-    if (stars)
+    }
+
+
+    if (stars) {
+
         stars.textContent =
             scratchStars;
 
-    if (starCount)
+    }
+
+
+    if (starCount) {
+
         starCount.textContent =
             scratchStars;
 
-    if (matchCount)
+    }
+
+
+    if (matchCount) {
+
         matchCount.textContent =
             scratchMatches;
 
-    if (bestStreak)
+    }
+
+
+    if (bestStreak) {
+
         bestStreak.textContent =
             scratchBestStreak;
 
-    if (progressText)
-        progressText.textContent =
-            `${scratchMatches} / 9 Matched`;
+    }
 
-    if (progressFill)
+
+    if (progressText) {
+
+        progressText.textContent =
+            `${scratchMatches} / ${nouns.length} Matched`;
+
+    }
+
+
+    if (progressFill) {
+
+        const percentage =
+            (scratchMatches / nouns.length) * 100;
+
         progressFill.style.width =
-            `${(scratchMatches / 9) * 100}%`;
+            `${percentage}%`;
+
+    }
 
 }
 
 
-/* ==========================================
-   COMPLETE GAME
-========================================== */
+/* =========================================================
+   COMPLETE PART 1
+========================================================= */
 
 function completeScratchGame() {
 
     updateMilksy(
         "🎉 Amazing! You matched all 9 nouns!"
     );
+
 
     setTimeout(
         () => {
@@ -539,6 +748,7 @@ function completeScratchGame() {
                 document.getElementById(
                     "levelCompletePopup"
                 );
+
 
             if (popup) {
 
@@ -549,15 +759,15 @@ function completeScratchGame() {
             }
 
         },
-        500
+        700
     );
 
 }
 
 
-/* ==========================================
+/* =========================================================
    MILKSY MESSAGE
-========================================== */
+========================================================= */
 
 function updateMilksy(message) {
 
@@ -565,6 +775,7 @@ function updateMilksy(message) {
         document.getElementById(
             "milksyMessage"
         );
+
 
     if (speech) {
 
@@ -576,9 +787,9 @@ function updateMilksy(message) {
 }
 
 
-/* ==========================================
+/* =========================================================
    SOUNDS
-========================================== */
+========================================================= */
 
 function playScratchSound() {
 
@@ -587,13 +798,17 @@ function playScratchSound() {
             "scratchSound"
         );
 
+
     if (
         audio &&
         audio.src
     ) {
 
         audio.currentTime = 0;
-        audio.play().catch(() => {});
+
+        audio.play().catch(
+            () => {}
+        );
 
     }
 
@@ -607,13 +822,17 @@ function playCorrectSound() {
             "correctSound"
         );
 
+
     if (
         audio &&
         audio.src
     ) {
 
         audio.currentTime = 0;
-        audio.play().catch(() => {});
+
+        audio.play().catch(
+            () => {}
+        );
 
     }
 
@@ -627,22 +846,26 @@ function playWrongSound() {
             "wrongSound"
         );
 
+
     if (
         audio &&
         audio.src
     ) {
 
         audio.currentTime = 0;
-        audio.play().catch(() => {});
+
+        audio.play().catch(
+            () => {}
+        );
 
     }
 
 }
 
 
-/* ==========================================
-   CONNECT BUTTONS
-========================================== */
+/* =========================================================
+   BUTTON CONNECTIONS
+========================================================= */
 
 document.addEventListener(
     "DOMContentLoaded",
@@ -653,13 +876,16 @@ document.addEventListener(
                 "part1Btn"
             );
 
+
         const backButton =
             document.getElementById(
                 "backToPartsBtn"
             );
 
 
-        /* PART 1 */
+        /*
+           PART 1
+        */
 
         if (part1) {
 
@@ -675,7 +901,9 @@ document.addEventListener(
         }
 
 
-        /* BACK BUTTON */
+        /*
+           BACK BUTTON
+        */
 
         if (backButton) {
 
@@ -689,7 +917,6 @@ document.addEventListener(
             );
 
         }
-
 
     }
 );
