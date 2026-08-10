@@ -47,10 +47,9 @@ const nouns = [
 
 ];
 
-
-/* ===========================================
-   CREATE SCRATCH CARDS
-=========================================== */
+/* =========================================================
+   REAL SCRATCH CARD SYSTEM
+========================================================= */
 
 function createScratchCards() {
 
@@ -60,7 +59,7 @@ function createScratchCards() {
 
     grid.innerHTML = "";
 
-    nouns.forEach((item) => {
+    nouns.forEach((item, index) => {
 
         const card = document.createElement("div");
 
@@ -68,55 +67,283 @@ function createScratchCards() {
 
         card.dataset.word = item.word;
 
-        card.draggable = false;
+        /* Hidden word */
+        const word = document.createElement("div");
 
-        card.innerHTML = "✨";
+        word.className = "scratch-word";
 
-        card.addEventListener("click", () => {
+        word.textContent = item.word;
 
-            revealCard(card, item);
+        card.appendChild(word);
 
-        });
+        /* Scratch canvas */
+        const canvas = document.createElement("canvas");
+
+        card.appendChild(canvas);
 
         grid.appendChild(card);
 
-    });
+        setupScratchCard(
+            card,
+            canvas,
+            item
+        );
 
+    });
 }
 
+/* =========================================================
+   SCRATCH CARD CANVAS
+========================================================= */
 
-/* ===========================================
-   REVEAL SCRATCH CARD
-=========================================== */
+function setupScratchCard(card, canvas, item) {
 
-function revealCard(card, item) {
+    const ctx = canvas.getContext("2d");
 
-    if (card.classList.contains("revealed")) {
+    let scratching = false;
+
+    let scratchedPixels = 0;
+
+    function resizeCanvas() {
+
+        const rect = card.getBoundingClientRect();
+
+        canvas.width = rect.width * devicePixelRatio;
+        canvas.height = rect.height * devicePixelRatio;
+
+        canvas.style.width = rect.width + "px";
+        canvas.style.height = rect.height + "px";
+
+        ctx.scale(
+            devicePixelRatio,
+            devicePixelRatio
+        );
+
+        /* Silver coating */
+
+        ctx.fillStyle = "#bdbdbd";
+
+        ctx.fillRect(
+            0,
+            0,
+            rect.width,
+            rect.height
+        );
+
+        /* Decorative shine */
+
+        const gradient =
+            ctx.createLinearGradient(
+                0,
+                0,
+                rect.width,
+                rect.height
+            );
+
+        gradient.addColorStop(
+            0,
+            "rgba(255,255,255,.35)"
+        );
+
+        gradient.addColorStop(
+            .5,
+            "rgba(255,255,255,.05)"
+        );
+
+        gradient.addColorStop(
+            1,
+            "rgba(120,120,120,.15)"
+        );
+
+        ctx.fillStyle = gradient;
+
+        ctx.fillRect(
+            0,
+            0,
+            rect.width,
+            rect.height
+        );
+
+        /* Sparkle */
+
+        ctx.fillStyle = "#ffffff";
+
+        ctx.font = "30px Arial";
+
+        ctx.textAlign = "center";
+
+        ctx.textBaseline = "middle";
+
+        ctx.fillText(
+            "✨",
+            rect.width / 2,
+            rect.height / 2
+        );
+    }
+
+    resizeCanvas();
+
+
+    /* =========================================
+       SCRATCH FUNCTION
+    ========================================= */
+
+    function scratch(x, y) {
+
+        const rect =
+            canvas.getBoundingClientRect();
+
+        const scaleX =
+            canvas.width / rect.width;
+
+        const scaleY =
+            canvas.height / rect.height;
+
+        ctx.save();
+
+        ctx.globalCompositeOperation =
+            "destination-out";
+
+        ctx.beginPath();
+
+        ctx.arc(
+            x * scaleX,
+            y * scaleY,
+            22 * Math.min(scaleX, scaleY),
+            0,
+            Math.PI * 2
+        );
+
+        ctx.fill();
+
+        ctx.restore();
+
+        scratchedPixels++;
+
+        /* Check after enough scratching */
+
+        if (scratchedPixels > 35) {
+
+            revealScratchedCard(
+                card,
+                canvas,
+                item
+            );
+
+        }
+    }
+
+
+    /* =========================================
+       MOUSE
+    ========================================= */
+
+    canvas.addEventListener(
+        "pointerdown",
+        event => {
+
+            scratching = true;
+
+            canvas.setPointerCapture(
+                event.pointerId
+            );
+
+            scratch(
+                event.offsetX,
+                event.offsetY
+            );
+
+            playScratchSound();
+
+        }
+    );
+
+    canvas.addEventListener(
+        "pointermove",
+        event => {
+
+            if (!scratching) return;
+
+            scratch(
+                event.offsetX,
+                event.offsetY
+            );
+
+        }
+    );
+
+    canvas.addEventListener(
+        "pointerup",
+        () => {
+
+            scratching = false;
+
+        }
+    );
+
+    canvas.addEventListener(
+        "pointercancel",
+        () => {
+
+            scratching = false;
+
+        }
+    );
+}
+
+/* =========================================================
+   REVEAL SCRATCHED WORD
+========================================================= */
+
+function revealScratchedCard(
+    card,
+    canvas,
+    item
+) {
+
+    if (
+        card.classList.contains(
+            "revealed"
+        )
+    ) {
         return;
     }
 
-    if (matchedWords.has(item.word)) {
-        return;
-    }
+    card.classList.add(
+        "revealed"
+    );
 
-    card.classList.add("revealed");
+    /* Remove scratch layer */
 
-    card.innerHTML = `
-        <span class="revealed-word">
-            ${item.word}
-        </span>
-    `;
+    canvas.style.pointerEvents =
+        "none";
+
+    canvas.style.opacity = "0";
+
+    /* Make card draggable */
 
     card.draggable = true;
 
-    card.addEventListener("dragstart", dragStart);
-
-    safeSound("scratchSound");
-
-    updateMilksyMessage(
-        `✨ You found "${item.word}"! Drag it to the correct picture!`
+    card.addEventListener(
+        "dragstart",
+        dragStart
     );
 
+    /* Milksy message */
+
+    const message =
+        document.getElementById(
+            "milksyMessage"
+        );
+
+    if (message) {
+
+        message.textContent =
+            "Great! Now drag " +
+            item.word +
+            " to its picture!";
+
+    }
 }
 
 
