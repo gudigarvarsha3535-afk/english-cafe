@@ -1,3 +1,438 @@
+/* =========================================
+   FULL SCREEN SCRATCH & MATCH GAME
+========================================= */
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    overflow-x: hidden;
+    overflow-y: auto;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+}
+
+/* Main game page */
+.scratch-game {
+    width: min(1400px, 94vw);
+    margin: 20px auto 100px;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+
+    position: relative;
+    z-index: 5;
+}
+
+/* =========================================
+   LEFT + RIGHT PANELS
+========================================= */
+
+.left-panel,
+.right-panel {
+    min-height: 520px;
+
+    padding: 28px;
+
+    border-radius: 30px;
+
+    background: rgba(255, 255, 255, 0.72);
+
+    box-shadow:
+        0 15px 35px rgba(80, 100, 120, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+
+    backdrop-filter: blur(10px);
+}
+
+/* =========================================
+   PANEL HEADINGS
+========================================= */
+
+.panel-title {
+    margin: 0;
+
+    text-align: center;
+
+    font-size: 32px;
+    font-weight: 800;
+
+    color: #ff4f83;
+}
+
+.panel-description {
+    margin: 10px auto 22px;
+
+    text-align: center;
+
+    font-size: 17px;
+
+    color: #5b5360;
+}
+
+/* =========================================
+   SCRATCH CARD GRID
+========================================= */
+
+.scratch-grid {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 18px;
+
+    width: 100%;
+}
+
+/* Scratch cards */
+
+.scratch-card {
+    aspect-ratio: 1 / 1;
+
+    min-height: 115px;
+
+    border-radius: 22px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+
+    font-size: 42px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #cfcfcf,
+            #eeeeee
+        );
+
+    box-shadow:
+        0 8px 18px rgba(80, 80, 80, 0.20);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.scratch-card:hover {
+    transform: translateY(-5px) scale(1.03);
+
+    box-shadow:
+        0 14px 25px rgba(80, 80, 80, 0.25);
+}
+
+/* Revealed word */
+
+.scratch-card.revealed {
+    background: linear-gradient(
+        135deg,
+        #fff7c7,
+        #ffe9a3
+    );
+
+    color: #7b4d00;
+
+    font-size: 22px;
+    font-weight: 800;
+
+    cursor: grab;
+}
+
+/* =========================================
+   PICTURE GRID
+========================================= */
+
+.image-grid {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 18px;
+
+    width: 100%;
+}
+
+/* Picture card */
+
+.picture-card {
+    aspect-ratio: 1 / 1;
+
+    min-height: 115px;
+
+    padding: 10px;
+
+    box-sizing: border-box;
+
+    border-radius: 22px;
+
+    background: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-direction: column;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 8px 18px rgba(80, 100, 120, 0.16);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.picture-card:hover {
+    transform: translateY(-5px);
+
+    box-shadow:
+        0 14px 25px rgba(80, 100, 120, 0.23);
+}
+
+/* Images */
+
+.picture-card img {
+    width: 85%;
+    height: 85%;
+
+    object-fit: contain;
+
+    border-radius: 14px;
+}
+
+/* =========================================
+   CORRECT / WRONG
+========================================= */
+
+.picture-card.correct {
+    animation: correctMatch 0.5s ease;
+
+    border: 5px solid #72d572;
+}
+
+.picture-card.wrong {
+    animation: wrongMatch 0.4s ease;
+
+    border: 5px solid #ff7777;
+}
+
+@keyframes correctMatch {
+
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.08);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+
+}
+
+@keyframes wrongMatch {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-8px);
+    }
+
+    75% {
+        transform: translateX(8px);
+    }
+
+}
+
+/* =========================================
+   PROGRESS
+========================================= */
+
+.progress-section {
+    width: min(1200px, 90vw);
+
+    margin: 20px auto;
+
+    position: relative;
+    z-index: 5;
+}
+
+.progress-text {
+    display: flex;
+    justify-content: space-between;
+
+    font-size: 20px;
+    font-weight: 700;
+
+    color: white;
+
+    margin-bottom: 8px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 14px;
+
+    background: rgba(255,255,255,0.5);
+
+    border-radius: 20px;
+
+    overflow: hidden;
+}
+
+#progress-fill {
+    width: 0%;
+
+    height: 100%;
+
+    border-radius: 20px;
+
+    background: linear-gradient(
+        90deg,
+        #ff77a8,
+        #ffd34d
+    );
+
+    transition: width 0.4s ease;
+}
+
+/* =========================================
+   MILKSY
+========================================= */
+
+.milksy-helper {
+    position: fixed;
+
+    right: 25px;
+    bottom: 25px;
+
+    z-index: 100;
+
+    display: flex;
+
+    align-items: flex-end;
+
+    gap: 12px;
+}
+
+.milksy-avatar img {
+    width: 90px;
+    height: 90px;
+
+    object-fit: contain;
+
+    filter:
+        drop-shadow(0 8px 10px rgba(0,0,0,0.2));
+}
+
+.speech {
+    max-width: 240px;
+
+    padding: 15px 20px;
+
+    background: white;
+
+    border-radius: 22px;
+
+    font-size: 16px;
+    font-weight: 700;
+
+    color: #5a4030;
+
+    box-shadow:
+        0 8px 20px rgba(0,0,0,0.15);
+}
+
+/* =========================================
+   BOTTOM BAR
+========================================= */
+
+.bottom-bar {
+    width: min(900px, 90vw);
+
+    margin: 20px auto 40px;
+
+    display: flex;
+
+    justify-content: center;
+
+    gap: 20px;
+
+    position: relative;
+
+    z-index: 10;
+}
+
+.bottom-item {
+    padding: 12px 24px;
+
+    border-radius: 18px;
+
+    background: rgba(255,255,255,0.75);
+
+    font-weight: 700;
+
+    color: #684b35;
+
+    box-shadow:
+        0 6px 15px rgba(0,0,0,0.12);
+}
+
+.bottom-item span {
+    margin-left: 6px;
+
+    color: #ff4f83;
+}
+
+/* =========================================
+   MOBILE / SMALL SCREEN
+========================================= */
+
+@media (max-width: 900px) {
+
+    .scratch-game {
+        grid-template-columns: 1fr;
+    }
+
+    .left-panel,
+    .right-panel {
+        min-height: auto;
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .scratch-grid,
+    .image-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .panel-title {
+        font-size: 25px;
+    }
+
+    .bottom-bar {
+        flex-direction: column;
+        align-items: center;
+    }
+
+}
+
 /* ===========================================
    LEVEL 1 MAIN CONTAINER
 =========================================== */
