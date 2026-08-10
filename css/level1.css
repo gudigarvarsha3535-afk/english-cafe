@@ -3505,3 +3505,366 @@ body {
     }
 
 }
+
+/* ==========================================
+   SCRATCH GAME CONNECTION
+========================================== */
+
+.hidden {
+    display: none !important;
+}
+
+
+/* FULL SCREEN GAME */
+
+.scratch-game-screen {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+
+    z-index: 9999;
+
+    background:
+        linear-gradient(
+            135deg,
+            #b9ecff,
+            #e8fff7
+        );
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    padding: 25px 35px;
+    box-sizing: border-box;
+}
+
+
+/* BACK BUTTON */
+
+.back-parts-btn {
+    position: fixed;
+
+    top: 20px;
+    left: 25px;
+
+    z-index: 10000;
+
+    border: none;
+    border-radius: 18px;
+
+    padding: 12px 22px;
+
+    font-size: 18px;
+    font-weight: bold;
+
+    background: white;
+    color: #6b4a3a;
+
+    cursor: pointer;
+
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+
+    transition: 0.2s;
+}
+
+.back-parts-btn:hover {
+    transform: translateY(-2px) scale(1.03);
+}
+
+
+/* GAME HEADER */
+
+.scratch-game-header {
+    text-align: center;
+
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.scratch-game-header h1 {
+    margin: 0;
+
+    font-size: clamp(32px, 4vw, 55px);
+
+    color: #ff4f83;
+
+    text-shadow:
+        2px 3px 5px rgba(0,0,0,0.15);
+}
+
+.scratch-game-header p {
+    margin-top: 8px;
+
+    font-size: 20px;
+
+    color: #55443c;
+}
+
+
+/* ==========================================
+   TWO PANELS
+========================================== */
+
+.scratch-game {
+    width: min(1500px, 96vw);
+
+    margin: 0 auto;
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 25px;
+
+    align-items: stretch;
+}
+
+
+/* LEFT + RIGHT PANELS */
+
+.left-panel,
+.right-panel {
+    min-height: 650px;
+
+    padding: 25px;
+
+    box-sizing: border-box;
+
+    border-radius: 30px;
+
+    background: rgba(255,255,255,0.55);
+
+    border: 2px solid rgba(255,255,255,0.8);
+
+    box-shadow:
+        0 12px 35px rgba(0,0,0,0.12);
+
+    backdrop-filter: blur(10px);
+}
+
+
+/* PANEL TITLES */
+
+.panel-title {
+    text-align: center;
+
+    margin: 0;
+
+    font-size: 30px;
+
+    color: #ff4f83;
+}
+
+.panel-description {
+    text-align: center;
+
+    margin: 8px 0 20px;
+
+    font-size: 17px;
+
+    color: #55443c;
+}
+
+
+/* ==========================================
+   3 × 3 GRIDS
+========================================== */
+
+.scratch-grid,
+.image-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 18px;
+
+    width: 100%;
+}
+
+
+/* ==========================================
+   SCRATCH CARDS
+========================================== */
+
+.scratch-card {
+
+    position: relative;
+
+    aspect-ratio: 1 / 1;
+
+    min-height: 130px;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+
+    cursor: crosshair;
+
+    background: white;
+
+    box-shadow:
+        0 7px 15px rgba(0,0,0,0.15);
+
+    user-select: none;
+}
+
+
+/* WORD UNDER SCRATCH LAYER */
+
+.scratch-word {
+
+    position: absolute;
+
+    inset: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: 25px;
+    font-weight: bold;
+
+    color: #ff4f83;
+
+    background: white;
+}
+
+
+/* SCRATCH CANVAS */
+
+.scratch-card canvas {
+
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    cursor: crosshair;
+}
+
+
+/* ==========================================
+   PICTURE CARDS
+========================================== */
+
+.image-card {
+
+    position: relative;
+
+    aspect-ratio: 1 / 1;
+
+    min-height: 130px;
+
+    padding: 10px;
+
+    box-sizing: border-box;
+
+    border-radius: 20px;
+
+    background: white;
+
+    border: 3px solid transparent;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    transition: 0.25s;
+
+    box-shadow:
+        0 7px 15px rgba(0,0,0,0.12);
+}
+
+.image-card img {
+
+    width: 90%;
+    height: 90%;
+
+    object-fit: contain;
+
+    border-radius: 15px;
+
+}
+
+.image-card:hover {
+
+    transform: translateY(-4px);
+
+    border-color: #ffd23f;
+
+}
+
+
+/* ==========================================
+   REVEALED WORD
+========================================== */
+
+.revealed-word {
+
+    position: fixed;
+
+    z-index: 10001;
+
+    padding: 12px 20px;
+
+    border-radius: 15px;
+
+    background: #ffd23f;
+
+    color: #573b25;
+
+    font-size: 20px;
+
+    font-weight: bold;
+
+    cursor: grab;
+
+    box-shadow:
+        0 8px 20px rgba(0,0,0,0.2);
+}
+
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width: 900px) {
+
+    .scratch-game {
+
+        grid-template-columns: 1fr;
+
+    }
+
+    .left-panel,
+    .right-panel {
+
+        min-height: auto;
+
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .scratch-grid,
+    .image-grid {
+
+        grid-template-columns: repeat(2, 1fr);
+
+    }
+
+    .scratch-game-screen {
+
+        padding: 20px 15px;
+
+    }
+
+}
