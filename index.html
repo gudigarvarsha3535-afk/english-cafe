@@ -165,61 +165,48 @@
     </div>
 
 
-    <!-- ==========================
-        SCRATCH GAME STARTS
-    =========================== -->
 
-    <section class="scratch-game">
+<section id="scratchGameScreen" class="scratch-game-screen hidden">
 
-        <!-- =========================================
-                 SCRATCH & MATCH GAME SCREEN
-        ========================================= -->
+    <button id="backToPartsBtn" class="back-parts-btn">
+        ← Back to Parts
+    </button>
 
-        <div id="scratchGameScreen" class="scratch-game-screen hidden">
+    <div class="scratch-game">
 
-            <button id="backToPartsBtn" class="back-parts-btn">
-                    ← Back to Parts
-            </button>
+        <!-- LEFT -->
+        <div class="left-panel">
 
-        <div class="scratch-game">
+            <h2 class="panel-title">
+                🎴 Scratch Cards
+            </h2>
 
-            <div class="left-panel">
+            <p class="panel-description">
+                Scratch a card to reveal a hidden word.
+            </p>
 
-                <h2 class="panel-title">
-                    🎴 Scratch Cards
-                </h2>
-
-                <p class="panel-description">
-                    Scratch one card to reveal a hidden word.
-                </p>
-
-                <div id="scratchGrid" class="scratch-grid"></div>
-
-            </div>
-
-
-            <div class="right-panel">
-
-                <h2 class="panel-title">
-                    🖼️ Match the Picture
-                </h2>
-
-                <p class="panel-description">
-                    Drag the scratched word onto the correct picture.
-                </p>
-
-                <div id="imageGrid" class="image-grid"></div>
-
-            </div>
-
-            </div>
+            <div id="scratchGrid" class="scratch-grid"></div>
 
         </div>
 
-    </section>
+        <!-- RIGHT -->
+        <div class="right-panel">
 
+            <h2 class="panel-title">
+                🖼️ Match the Picture
+            </h2>
 
+            <p class="panel-description">
+                Drag the revealed word onto the correct picture.
+            </p>
 
+            <div id="imageGrid" class="image-grid"></div>
+
+        </div>
+
+    </div>
+
+</section>
         <!-- ==========================
              MILKSY HELPER
         =========================== -->
