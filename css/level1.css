@@ -2917,3 +2917,133 @@ body {
     }
 
 }
+
+/* =========================================
+   PART 1 → SCRATCH GAME SCREEN
+========================================= */
+
+.scratch-game-screen {
+    position: fixed;
+    inset: 0;
+
+    width: 100vw;
+    height: 100vh;
+
+    overflow-y: auto;
+
+    z-index: 9999;
+
+    background:
+        linear-gradient(
+            135deg,
+            #9de4f7,
+            #d9f8f5
+        );
+
+    padding: 25px;
+    box-sizing: border-box;
+}
+
+/* Hide screen */
+.scratch-game-screen.hidden {
+    display: none;
+}
+
+/* Back button */
+
+.back-parts-btn {
+    position: absolute;
+
+    top: 20px;
+    left: 25px;
+
+    z-index: 10000;
+
+    border: none;
+    border-radius: 15px;
+
+    padding: 12px 22px;
+
+    font-size: 17px;
+    font-weight: 700;
+
+    background: white;
+    color: #704900;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 5px 15px rgba(0,0,0,.15);
+
+    transition: .2s;
+}
+
+.back-parts-btn:hover {
+    transform: scale(1.05);
+}
+
+/* Game itself */
+
+.scratch-game-screen .scratch-game {
+
+    width: min(1450px, 92vw);
+
+    min-height: calc(100vh - 80px);
+
+    margin: 55px auto 30px;
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 30px;
+
+    align-items: stretch;
+}
+
+/* Panels */
+
+.scratch-game-screen .left-panel,
+.scratch-game-screen .right-panel {
+
+    background:
+        rgba(255,255,255,.78);
+
+    border-radius: 30px;
+
+    padding: 25px;
+
+    box-sizing: border-box;
+
+    box-shadow:
+        0 15px 40px
+        rgba(60,90,110,.20);
+}
+
+/* 3 × 3 cards */
+
+.scratch-game-screen .scratch-grid,
+.scratch-game-screen .image-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 18px;
+
+    width: 100%;
+}
+
+/* Responsive */
+
+@media(max-width:900px) {
+
+    .scratch-game-screen .scratch-game {
+
+        grid-template-columns: 1fr;
+
+    }
+
+}
