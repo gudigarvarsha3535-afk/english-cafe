@@ -3047,3 +3047,461 @@ body {
     }
 
 }
+
+/* ==========================================
+   FULL SCREEN SCRATCH GAME
+========================================== */
+
+.scratch-game-screen {
+
+    position: fixed;
+
+    inset: 0;
+
+    width: 100vw;
+    height: 100vh;
+
+    z-index: 9999;
+
+    background:
+        linear-gradient(
+            135deg,
+            #b8f0ff,
+            #eafff5
+        );
+
+    overflow: auto;
+
+    padding: 25px 40px 40px;
+
+    box-sizing: border-box;
+
+}
+
+
+/* ==========================================
+   HIDE GAME
+========================================== */
+
+.scratch-game-screen.hidden {
+
+    display: none !important;
+
+}
+
+
+/* ==========================================
+   BACK BUTTON
+========================================== */
+
+.back-parts-btn {
+
+    position: fixed;
+
+    top: 20px;
+    left: 25px;
+
+    z-index: 10001;
+
+    border: none;
+
+    border-radius: 30px;
+
+    padding: 12px 22px;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    background: white;
+
+    color: #7b4b00;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 5px 15px rgba(0,0,0,.15);
+
+    transition: .2s;
+
+}
+
+
+.back-parts-btn:hover {
+
+    transform: scale(1.05);
+
+}
+
+
+/* ==========================================
+   GAME CONTAINER
+========================================== */
+
+.scratch-game-screen .scratch-game {
+
+    width: min(1400px, 95vw);
+
+    min-height: calc(100vh - 80px);
+
+    margin: 45px auto 0;
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 30px;
+
+    align-items: stretch;
+
+}
+
+
+/* ==========================================
+   PANELS
+========================================== */
+
+.scratch-game-screen .left-panel,
+.scratch-game-screen .right-panel {
+
+    background:
+        rgba(255,255,255,.75);
+
+    border-radius: 30px;
+
+    padding: 30px;
+
+    box-sizing: border-box;
+
+    box-shadow:
+        0 12px 35px
+        rgba(80,120,130,.18);
+
+    backdrop-filter: blur(10px);
+
+}
+
+
+/* ==========================================
+   PANEL TITLES
+========================================== */
+
+.scratch-game-screen .panel-title {
+
+    text-align: center;
+
+    font-size: 32px;
+
+    margin: 5px 0 8px;
+
+    color: #ff4f87;
+
+}
+
+
+.scratch-game-screen .panel-description {
+
+    text-align: center;
+
+    font-size: 18px;
+
+    margin-bottom: 25px;
+
+    color: #555;
+
+}
+
+
+/* ==========================================
+   SCRATCH GRID
+========================================== */
+
+.scratch-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 18px;
+
+    max-width: 600px;
+
+    margin: auto;
+
+}
+
+
+/* ==========================================
+   SCRATCH CARD
+========================================== */
+
+.scratch-card {
+
+    aspect-ratio: 1 / 1;
+
+    min-height: 130px;
+
+    border-radius: 22px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #aaa,
+            #ddd
+        );
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    cursor: pointer;
+
+    box-shadow:
+        inset 0 0 0 2px
+        rgba(255,255,255,.7),
+
+        0 8px 15px
+        rgba(0,0,0,.15);
+
+    transition:
+        transform .2s,
+        box-shadow .2s;
+
+    user-select: none;
+
+}
+
+
+.scratch-card:hover {
+
+    transform: translateY(-5px);
+
+    box-shadow:
+        0 12px 22px
+        rgba(0,0,0,.2);
+
+}
+
+
+/* ==========================================
+   SCRATCH COVER
+========================================== */
+
+.scratch-cover {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 40px;
+
+    color: white;
+
+}
+
+
+.scratch-cover span {
+
+    font-size: 14px;
+
+    margin-top: 8px;
+
+    font-weight: bold;
+
+    color: white;
+
+}
+
+
+/* ==========================================
+   REVEALED WORD
+========================================== */
+
+.scratch-card.revealed {
+
+    background:
+        linear-gradient(
+            135deg,
+            #fff8d8,
+            #ffffff
+        );
+
+    border: 4px solid #ffd34d;
+
+}
+
+
+.revealed-word {
+
+    font-size: 25px;
+
+    font-weight: bold;
+
+    color: #7b4b00;
+
+    text-align: center;
+
+}
+
+
+/* ==========================================
+   PICTURE GRID
+========================================== */
+
+.image-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 18px;
+
+    max-width: 600px;
+
+    margin: auto;
+
+}
+
+
+/* ==========================================
+   PICTURE CARD
+========================================== */
+
+.picture-card {
+
+    min-height: 150px;
+
+    background: white;
+
+    border-radius: 22px;
+
+    padding: 10px;
+
+    box-sizing: border-box;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 7px 18px
+        rgba(0,0,0,.12);
+
+    transition: .2s;
+
+}
+
+
+.picture-card img {
+
+    width: 100%;
+
+    height: 105px;
+
+    object-fit: contain;
+
+}
+
+
+.picture-card span {
+
+    font-size: 15px;
+
+    font-weight: bold;
+
+    color: #555;
+
+}
+
+
+/* ==========================================
+   CORRECT
+========================================== */
+
+.picture-card.correct {
+
+    border: 5px solid #55c878;
+
+    background: #eaffef;
+
+    transform: scale(1.03);
+
+}
+
+
+/* ==========================================
+   WRONG
+========================================== */
+
+.picture-card.wrong {
+
+    border: 5px solid #ff6b6b;
+
+    animation: shakeCard .35s;
+
+}
+
+
+@keyframes shakeCard {
+
+    0% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-8px);
+    }
+
+    50% {
+        transform: translateX(8px);
+    }
+
+    75% {
+        transform: translateX(-5px);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+
+}
+
+
+/* ==========================================
+   MOBILE / SMALL SCREEN
+========================================== */
+
+@media (max-width: 900px) {
+
+    .scratch-game-screen .scratch-game {
+
+        grid-template-columns: 1fr;
+
+    }
+
+    .scratch-grid,
+    .image-grid {
+
+        grid-template-columns:
+            repeat(3, 1fr);
+
+    }
+
+}
