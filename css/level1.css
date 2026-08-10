@@ -2014,3 +2014,100 @@ transform:scale(1.08);
         white;
 }
 
+/* =========================================
+   FINAL FULL-SCREEN GRID FIX
+========================================= */
+
+.scratch-game {
+    width: 94vw !important;
+    max-width: 1500px !important;
+
+    margin: 20px auto 80px !important;
+
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+
+    gap: 24px !important;
+
+    box-sizing: border-box !important;
+}
+
+.left-panel,
+.right-panel {
+    width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+}
+
+/* Force exactly 3 columns */
+
+.scratch-grid {
+    width: 100% !important;
+
+    display: grid !important;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr)) !important;
+
+    gap: 16px !important;
+
+    box-sizing: border-box !important;
+}
+
+.image-grid {
+    width: 100% !important;
+
+    display: grid !important;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr)) !important;
+
+    gap: 16px !important;
+
+    box-sizing: border-box !important;
+}
+
+/* Cards must stay inside their panels */
+
+.scratch-card,
+.picture-card {
+    width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+
+    aspect-ratio: 1 / 1 !important;
+}
+
+/* Keep pictures inside cards */
+
+.picture-card img {
+    max-width: 90% !important;
+    max-height: 90% !important;
+
+    width: auto !important;
+    height: auto !important;
+
+    object-fit: contain !important;
+}
+
+/* =========================================
+   DESKTOP FULL SCREEN
+========================================= */
+
+@media (min-width: 1000px) {
+
+    .scratch-game {
+        min-height: 520px;
+    }
+
+    .left-panel,
+    .right-panel {
+        padding: 24px !important;
+    }
+
+    .scratch-card,
+    .picture-card {
+        min-height: 100px !important;
+    }
+
+}
