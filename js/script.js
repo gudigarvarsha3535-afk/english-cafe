@@ -1978,7 +1978,7 @@ function startLevel1() {
     `;
 
     // Start Scratch & Match
-    createScratchCards();
+    startScratchGame();
     createImages();
     updateScore();
 
