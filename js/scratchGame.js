@@ -1,3 +1,7 @@
+/* ==========================================
+   SCRATCH & MATCH — PART 1 NOUNS
+========================================== */
+
 const nouns = [
 
     {
@@ -12,315 +16,169 @@ const nouns = [
 
     {
         word: "Book",
-        image: "images/nouns/book.jpg"
+        image: "images/nouns/book.png"
     },
 
     {
         word: "School",
-        image: "images/nouns/school.jpg"
+        image: "images/nouns/school.png"
     },
 
     {
         word: "Tree",
-        image: "images/nouns/tree.jpg"
+        image: "images/nouns/tree.png"
     },
 
     {
         word: "Bus",
-        image: "images/nouns/bus.jpg"
+        image: "images/nouns/bus.png"
     },
 
     {
         word: "Chair",
-        image: "images/nouns/chair.jpg"
+        image: "images/nouns/chair.png"
     },
 
     {
         word: "Teacher",
-        image: "images/nouns/teacher.jpg"
+        image: "images/nouns/teacher.png"
     },
 
     {
         word: "Cat",
-        image: "images/nouns/cat.jpg"
+        image: "images/nouns/cat.png"
     }
 
 ];
 
-/* =========================================================
-   REAL SCRATCH CARD SYSTEM
-========================================================= */
+
+/* ==========================================
+   SCRATCH GAME VARIABLES
+========================================== */
+
+let scratchScore = 0;
+let scratchStreak = 0;
+let scratchStars = 0;
+let scratchMatches = 0;
+let scratchBestStreak = 0;
+
+let draggedWord = "";
+
+
+/* ==========================================
+   OPEN SCRATCH GAME
+========================================== */
+
+function openScratchGame() {
+
+    const gameScreen =
+        document.getElementById("scratchGameScreen");
+
+    if (!gameScreen) {
+        console.error("Scratch game screen not found.");
+        return;
+    }
+
+    gameScreen.classList.remove("hidden");
+
+    document.body.classList.add("scratch-mode");
+
+    createScratchCards();
+    createImages();
+
+    updateScratchStats();
+
+    updateMilksy(
+        "Amazing! Scratch a card to discover a noun! ✨"
+    );
+}
+
+
+/* ==========================================
+   CLOSE SCRATCH GAME
+========================================== */
+
+function closeScratchGame() {
+
+    const gameScreen =
+        document.getElementById("scratchGameScreen");
+
+    if (!gameScreen) return;
+
+    gameScreen.classList.add("hidden");
+
+    document.body.classList.remove("scratch-mode");
+
+    updateMilksy(
+        "Welcome back! Choose a part to continue. 🌸"
+    );
+}
+
+
+/* ==========================================
+   CREATE SCRATCH CARDS
+========================================== */
 
 function createScratchCards() {
 
-    const grid = document.getElementById("scratchGrid");
+    const grid =
+        document.getElementById("scratchGrid");
 
-    if (!grid) return;
+    if (!grid) {
+        console.error("scratchGrid not found.");
+        return;
+    }
 
     grid.innerHTML = "";
 
-    nouns.forEach((item, index) => {
+    nouns.forEach((item) => {
 
-        const card = document.createElement("div");
+        const card =
+            document.createElement("div");
 
         card.className = "scratch-card";
 
         card.dataset.word = item.word;
 
-        /* Hidden word */
-        const word = document.createElement("div");
+        card.innerHTML = `
+            <div class="scratch-cover">
+                ✨
+                <span>Scratch Me!</span>
+            </div>
+        `;
 
-        word.className = "scratch-word";
+        card.addEventListener(
+            "click",
+            function () {
 
-        word.textContent = item.word;
+                revealCard(card, item);
 
-        card.appendChild(word);
-
-        /* Scratch canvas */
-        const canvas = document.createElement("canvas");
-
-        card.appendChild(canvas);
+            }
+        );
 
         grid.appendChild(card);
-
-        setupScratchCard(
-            card,
-            canvas,
-            item
-        );
 
     });
 }
 
-/* =========================================================
-   SCRATCH CARD CANVAS
-========================================================= */
 
-function setupScratchCard(card, canvas, item) {
+/* ==========================================
+   REVEAL SCRATCH CARD
+========================================== */
 
-    const ctx = canvas.getContext("2d");
+function revealCard(card, item) {
 
-    let scratching = false;
-
-    let scratchedPixels = 0;
-
-    function resizeCanvas() {
-
-        const rect = card.getBoundingClientRect();
-
-        canvas.width = rect.width * devicePixelRatio;
-        canvas.height = rect.height * devicePixelRatio;
-
-        canvas.style.width = rect.width + "px";
-        canvas.style.height = rect.height + "px";
-
-        ctx.scale(
-            devicePixelRatio,
-            devicePixelRatio
-        );
-
-        /* Silver coating */
-
-        ctx.fillStyle = "#bdbdbd";
-
-        ctx.fillRect(
-            0,
-            0,
-            rect.width,
-            rect.height
-        );
-
-        /* Decorative shine */
-
-        const gradient =
-            ctx.createLinearGradient(
-                0,
-                0,
-                rect.width,
-                rect.height
-            );
-
-        gradient.addColorStop(
-            0,
-            "rgba(255,255,255,.35)"
-        );
-
-        gradient.addColorStop(
-            .5,
-            "rgba(255,255,255,.05)"
-        );
-
-        gradient.addColorStop(
-            1,
-            "rgba(120,120,120,.15)"
-        );
-
-        ctx.fillStyle = gradient;
-
-        ctx.fillRect(
-            0,
-            0,
-            rect.width,
-            rect.height
-        );
-
-        /* Sparkle */
-
-        ctx.fillStyle = "#ffffff";
-
-        ctx.font = "30px Arial";
-
-        ctx.textAlign = "center";
-
-        ctx.textBaseline = "middle";
-
-        ctx.fillText(
-            "✨",
-            rect.width / 2,
-            rect.height / 2
-        );
-    }
-
-    resizeCanvas();
-
-
-    /* =========================================
-       SCRATCH FUNCTION
-    ========================================= */
-
-    function scratch(x, y) {
-
-        const rect =
-            canvas.getBoundingClientRect();
-
-        const scaleX =
-            canvas.width / rect.width;
-
-        const scaleY =
-            canvas.height / rect.height;
-
-        ctx.save();
-
-        ctx.globalCompositeOperation =
-            "destination-out";
-
-        ctx.beginPath();
-
-        ctx.arc(
-            x * scaleX,
-            y * scaleY,
-            22 * Math.min(scaleX, scaleY),
-            0,
-            Math.PI * 2
-        );
-
-        ctx.fill();
-
-        ctx.restore();
-
-        scratchedPixels++;
-
-        /* Check after enough scratching */
-
-        if (scratchedPixels > 35) {
-
-            revealScratchedCard(
-                card,
-                canvas,
-                item
-            );
-
-        }
-    }
-
-
-    /* =========================================
-       MOUSE
-    ========================================= */
-
-    canvas.addEventListener(
-        "pointerdown",
-        event => {
-
-            scratching = true;
-
-            canvas.setPointerCapture(
-                event.pointerId
-            );
-
-            scratch(
-                event.offsetX,
-                event.offsetY
-            );
-
-            playScratchSound();
-
-        }
-    );
-
-    canvas.addEventListener(
-        "pointermove",
-        event => {
-
-            if (!scratching) return;
-
-            scratch(
-                event.offsetX,
-                event.offsetY
-            );
-
-        }
-    );
-
-    canvas.addEventListener(
-        "pointerup",
-        () => {
-
-            scratching = false;
-
-        }
-    );
-
-    canvas.addEventListener(
-        "pointercancel",
-        () => {
-
-            scratching = false;
-
-        }
-    );
-}
-
-/* =========================================================
-   REVEAL SCRATCHED WORD
-========================================================= */
-
-function revealScratchedCard(
-    card,
-    canvas,
-    item
-) {
-
-    if (
-        card.classList.contains(
-            "revealed"
-        )
-    ) {
+    if (card.classList.contains("revealed")) {
         return;
     }
 
-    card.classList.add(
-        "revealed"
-    );
+    card.classList.add("revealed");
 
-    /* Remove scratch layer */
-
-    canvas.style.pointerEvents =
-        "none";
-
-    canvas.style.opacity = "0";
-
-    /* Make card draggable */
+    card.innerHTML = `
+        <div class="revealed-word">
+            ${item.word}
+        </div>
+    `;
 
     card.draggable = true;
 
@@ -329,96 +187,85 @@ function revealScratchedCard(
         dragStart
     );
 
-    /* Milksy message */
+    updateMilksy(
+        `You found "${item.word}"! Now drag it to the correct picture. 🎯`
+    );
 
-    const message =
-        document.getElementById(
-            "milksyMessage"
-        );
+    playScratchSound();
 
-    if (message) {
-
-        message.textContent =
-            "Great! Now drag " +
-            item.word +
-            " to its picture!";
-
-    }
 }
 
 
-/* ===========================================
-   DRAG START
-=========================================== */
+/* ==========================================
+   DRAG WORD
+========================================== */
 
 function dragStart(event) {
 
-    draggedWord = event.currentTarget.dataset.word;
-
-    event.dataTransfer.setData(
-        "text/plain",
-        draggedWord
-    );
-
-    event.dataTransfer.effectAllowed = "move";
+    draggedWord =
+        event.currentTarget.dataset.word;
 
 }
 
 
-/* ===========================================
-   CREATE PICTURE CARDS
-=========================================== */
+/* ==========================================
+   CREATE PICTURES
+========================================== */
 
 function createImages() {
 
-    const grid = document.getElementById("imageGrid");
+    const grid =
+        document.getElementById("imageGrid");
 
-    if (!grid) return;
+    if (!grid) {
+        console.error("imageGrid not found.");
+        return;
+    }
 
     grid.innerHTML = "";
 
-    const shuffled = [...nouns]
-        .sort(() => Math.random() - 0.5);
-
+    const shuffled =
+        [...nouns].sort(
+            () => Math.random() - 0.5
+        );
 
     shuffled.forEach((item) => {
 
-        const card = document.createElement("div");
+        const card =
+            document.createElement("div");
 
         card.className = "picture-card";
 
-        card.dataset.word = item.word;
+        card.dataset.word =
+            item.word;
 
         card.innerHTML = `
             <img
                 src="${item.image}"
                 alt="${item.word}"
             >
+            <span>${item.word}</span>
         `;
-
 
         card.addEventListener(
             "dragover",
             allowDrop
         );
 
-
         card.addEventListener(
             "drop",
             dropWord
         );
 
-
         grid.appendChild(card);
 
     });
-
 }
 
 
-/* ===========================================
+/* ==========================================
    ALLOW DROP
-=========================================== */
+========================================== */
 
 function allowDrop(event) {
 
@@ -427,154 +274,126 @@ function allowDrop(event) {
 }
 
 
-/* ===========================================
+/* ==========================================
    DROP WORD
-=========================================== */
+========================================== */
 
 function dropWord(event) {
 
     event.preventDefault();
 
-    const picture = event.currentTarget;
+    const picture =
+        event.currentTarget;
 
-    const correctWord = picture.dataset.word;
-
-
-    /* No word currently being dragged */
-
-    if (!draggedWord) {
-        return;
-    }
+    const correctWord =
+        picture.dataset.word;
 
 
-    /* Already matched */
-
-    if (picture.classList.contains("correct")) {
-        return;
-    }
-
-
-    /* ========================================
-       CORRECT ANSWER
-    ======================================== */
+    /* -----------------------------
+       CORRECT
+    ----------------------------- */
 
     if (draggedWord === correctWord) {
 
+        if (
+            picture.classList.contains("correct")
+        ) {
+            return;
+        }
+
         picture.classList.add("correct");
 
-        matchedWords.add(draggedWord);
+        scratchMatches++;
 
-        matches++;
+        scratchScore += 10;
 
-        score += 10;
+        scratchStreak++;
 
-        streak++;
+        scratchStars++;
 
-        stars++;
+        if (
+            scratchStreak >
+            scratchBestStreak
+        ) {
 
-
-        if (streak > bestStreak) {
-
-            bestStreak = streak;
-
-        }
-
-
-        /* Find and complete the scratch card */
-
-        const scratchCard =
-            document.querySelector(
-                `.scratch-card[data-word="${draggedWord}"]`
-            );
-
-
-        if (scratchCard) {
-
-            scratchCard.classList.add("matched");
-
-            scratchCard.draggable = false;
-
-            scratchCard.innerHTML = `
-                <span class="matched-word">
-                    ✓ ${draggedWord}
-                </span>
-            `;
+            scratchBestStreak =
+                scratchStreak;
 
         }
 
+        updateScratchStats();
 
-        safeSound("correctSound");
-
-
-        updateMilksyMessage(
-            `🎉 Great job! "${draggedWord}" is correct!`
+        updateMilksy(
+            `Excellent! ${correctWord} is correct! ⭐`
         );
 
+        playCorrectSound();
 
-        draggedWord = "";
+        if (scratchMatches === nouns.length) {
 
+            completeScratchGame();
 
-        updateScore();
-
-        checkCompletion();
+        }
 
     }
 
 
-    /* ========================================
-       WRONG ANSWER
-    ======================================== */
+    /* -----------------------------
+       WRONG
+    ----------------------------- */
 
     else {
 
         picture.classList.add("wrong");
 
-        streak = 0;
+        scratchStreak = 0;
 
-        safeSound("wrongSound");
+        updateScratchStats();
 
-
-        updateMilksyMessage(
-            "💭 Almost! Try another picture."
+        updateMilksy(
+            "Almost! Try another picture. 💭"
         );
 
+        playWrongSound();
 
-        updateScore();
+        setTimeout(
+            () => {
 
+                picture.classList.remove(
+                    "wrong"
+                );
 
-        setTimeout(() => {
-
-            picture.classList.remove("wrong");
-
-        }, 600);
+            },
+            600
+        );
 
     }
 
 }
 
 
-/* ===========================================
+/* ==========================================
    UPDATE SCORE
-=========================================== */
+========================================== */
 
-function updateScore() {
+function updateScratchStats() {
 
-    const scoreElement =
+    const score =
         document.getElementById("score");
 
-    const streakElement =
+    const streak =
         document.getElementById("streak");
 
-    const starsElement =
+    const stars =
         document.getElementById("stars");
 
-    const matchElement =
-        document.getElementById("matchCount");
-
-    const starCountElement =
+    const starCount =
         document.getElementById("starCount");
 
-    const bestStreakElement =
+    const matchCount =
+        document.getElementById("matchCount");
+
+    const bestStreak =
         document.getElementById("bestStreak");
 
     const progressText =
@@ -584,244 +403,209 @@ function updateScore() {
         document.getElementById("progress-fill");
 
 
-    if (scoreElement) {
+    if (score)
+        score.textContent =
+            scratchScore;
 
-        scoreElement.textContent = score;
+    if (streak)
+        streak.textContent =
+            scratchStreak;
 
-    }
+    if (stars)
+        stars.textContent =
+            scratchStars;
 
+    if (starCount)
+        starCount.textContent =
+            scratchStars;
 
-    if (streakElement) {
+    if (matchCount)
+        matchCount.textContent =
+            scratchMatches;
 
-        streakElement.textContent = streak;
+    if (bestStreak)
+        bestStreak.textContent =
+            scratchBestStreak;
 
-    }
-
-
-    if (starsElement) {
-
-        starsElement.textContent = stars;
-
-    }
-
-
-    if (matchElement) {
-
-        matchElement.textContent = matches;
-
-    }
-
-
-    if (starCountElement) {
-
-        starCountElement.textContent = stars;
-
-    }
-
-
-    if (bestStreakElement) {
-
-        bestStreakElement.textContent = bestStreak;
-
-    }
-
-
-    if (progressText) {
-
+    if (progressText)
         progressText.textContent =
-            `${matches} / ${nouns.length} Matched`;
+            `${scratchMatches} / 9 Matched`;
 
-    }
-
-
-    if (progressFill) {
-
+    if (progressFill)
         progressFill.style.width =
-            `${(matches / nouns.length) * 100}%`;
-
-    }
+            `${(scratchMatches / 9) * 100}%`;
 
 }
 
 
-/* ===========================================
-   CHECK COMPLETION
-=========================================== */
+/* ==========================================
+   COMPLETE GAME
+========================================== */
 
-function checkCompletion() {
+function completeScratchGame() {
 
-    if (matches < nouns.length) {
-
-        return;
-
-    }
-
-
-    updateMilksyMessage(
-        "🏆 Amazing! You matched all the words!"
+    updateMilksy(
+        "🎉 Amazing! You matched all 9 nouns!"
     );
 
+    setTimeout(
+        () => {
 
-    const popup =
-        document.getElementById(
-            "levelCompletePopup"
-        );
+            const popup =
+                document.getElementById(
+                    "levelCompletePopup"
+                );
 
+            if (popup) {
 
-    if (popup) {
+                popup.classList.remove(
+                    "hidden"
+                );
 
-        popup.classList.remove("hidden");
+            }
 
-    }
-
-
-    safeSound("completeSound");
+        },
+        500
+    );
 
 }
 
 
-/* ===========================================
+/* ==========================================
    MILKSY MESSAGE
-=========================================== */
+========================================== */
 
-function updateMilksyMessage(message) {
+function updateMilksy(message) {
 
-    const messageBox =
-        document.getElementById("milksyMessage");
-
-
-    if (!messageBox) {
-
-        return;
-
-    }
-
-
-    messageBox.textContent = message;
-
-}
-
-
-/* ===========================================
-   SAFE SOUND
-=========================================== */
-
-function safeSound(id) {
-
-    const sound =
-        document.getElementById(id);
-
-
-    if (!sound) {
-
-        return;
-
-    }
-
-
-    try {
-
-        sound.currentTime = 0;
-
-        sound.play().catch(() => {});
-
-    }
-
-    catch (error) {
-
-        console.log(
-            "Sound unavailable:",
-            id
+    const speech =
+        document.getElementById(
+            "milksyMessage"
         );
 
+    if (speech) {
+
+        speech.textContent =
+            message;
+
     }
 
 }
 
 
-/* ===========================================
-   START GAME
-=========================================== */
+/* ==========================================
+   SOUNDS
+========================================== */
 
-function startScratchGame() {
+function playScratchSound() {
 
-    score = 0;
+    const audio =
+        document.getElementById(
+            "scratchSound"
+        );
 
-    streak = 0;
+    if (
+        audio &&
+        audio.src
+    ) {
 
-    stars = 0;
+        audio.currentTime = 0;
+        audio.play().catch(() => {});
 
-    matches = 0;
-
-    bestStreak = 0;
-
-    draggedWord = "";
-
-    matchedWords.clear();
-
-
-    createScratchCards();
-
-    createImages();
-
-    updateScore();
-
-
-    updateMilksyMessage(
-        "Hello! Scratch a card to begin! 🥛✨"
-    );
+    }
 
 }
 
 
-/* ===========================================
-   START WHEN PAGE LOADS
-=========================================== */
+function playCorrectSound() {
+
+    const audio =
+        document.getElementById(
+            "correctSound"
+        );
+
+    if (
+        audio &&
+        audio.src
+    ) {
+
+        audio.currentTime = 0;
+        audio.play().catch(() => {});
+
+    }
+
+}
+
+
+function playWrongSound() {
+
+    const audio =
+        document.getElementById(
+            "wrongSound"
+        );
+
+    if (
+        audio &&
+        audio.src
+    ) {
+
+        audio.currentTime = 0;
+        audio.play().catch(() => {});
+
+    }
+
+}
+
+
+/* ==========================================
+   CONNECT BUTTONS
+========================================== */
 
 document.addEventListener(
     "DOMContentLoaded",
-    () => {
+    function () {
 
-        startScratchGame();
+        const part1 =
+            document.getElementById(
+                "part1Btn"
+            );
+
+        const backButton =
+            document.getElementById(
+                "backToPartsBtn"
+            );
+
+
+        /* PART 1 */
+
+        if (part1) {
+
+            part1.addEventListener(
+                "click",
+                function () {
+
+                    openScratchGame();
+
+                }
+            );
+
+        }
+
+
+        /* BACK BUTTON */
+
+        if (backButton) {
+
+            backButton.addEventListener(
+                "click",
+                function () {
+
+                    closeScratchGame();
+
+                }
+            );
+
+        }
+
 
     }
 );
-
-/* =========================================
-   PART 1 → SCRATCH & MATCH
-========================================= */
-
-const part1Btn = document.getElementById("part1Btn");
-const scratchGameScreen =
-    document.getElementById("scratchGameScreen");
-
-const backToPartsBtn =
-    document.getElementById("backToPartsBtn");
-
-
-if (part1Btn) {
-
-    part1Btn.addEventListener("click", function () {
-
-        scratchGameScreen.classList.remove("hidden");
-
-        // Create the game
-        createScratchCards();
-        createImages();
-
-        updateScore();
-
-    });
-
-}
-
-
-if (backToPartsBtn) {
-
-    backToPartsBtn.addEventListener("click", function () {
-
-        scratchGameScreen.classList.add("hidden");
-
-    });
-
-}
